@@ -52,7 +52,8 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
+        // seaが904より大きければifの条件に当てはまるが、904より大きくないのでelseの条件が適用され7となる
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +68,12 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
+        // 上から順に条件分岐
+        // 先ほどと同様にsea>904は弾かれる。
+        // その次の条件文では904以上の時と書かれている
+        // 以上の時はその値も含むのでここの条件に入る
+        // このタイミングで他の条件に入ることはなくなるので7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -97,7 +103,14 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
+        // 1個目の大きな条件分岐のブロックではelse if (sea >= 903 || land)の条件に入る
+        // その後seaは8になりlandはfalseつまり!landであるので、その条件文に入りland = trueになる
+        // この1個目の大きなifからelseまでのブロックを抜けた後に新たなifに入る。
+        // or文の条件でありパイプラインの前の条件は満たしていないが、後ろ側の条件は満たしている
+        // なのでdecrementされる
+        // 最後のif文では(land)つまりlandがtrueの時に入る。
+        // ここでseaが10に変更されるので出力は10となる
     }
 
     // ===================================================================================
