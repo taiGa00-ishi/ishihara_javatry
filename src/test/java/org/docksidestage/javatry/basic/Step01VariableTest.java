@@ -20,6 +20,10 @@ import java.util.Locale;
 
 import org.docksidestage.unit.PlainTestCase;
 
+// TODO ishihara ↑import文で unused の警告が出ています。削除をお願いします。Localeどこかで補完した？(^^ by jflute (2025/07/10)
+
+// TODO ishihara 事務的なレビューで申し訳ないですが、javatryではjavadocのauthorをお願いしています by jflute (2025/07/10)
+// https://dbflute.seasar.org/ja/tutorial/handson/review/codingpolicy.html#minjavadoc
 /**
  * The test of variable. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
@@ -56,6 +60,12 @@ public class Step01VariableTest extends PlainTestCase {
         // JVM系の言語はこの道理が通じそう
         // C駆動のもの（python,Go）とかはシンプルにエラー。型変換してあげないといけない
         // コメント前に半角スペースを空けるのが一般的そう
+        // TODO ishihara [いいね] 思考コメントありがとうございます！深く考えてくださってありがたいです by jflute (2025/07/10)
+        // よく昔のインターネットサービスの画面とかは、「こんにちは、nullさん」とか表示されてることがありました(^^。
+        // 最近では減りましたが、今でもメールでは null になっちゃってるもの大企業でも時々見かけます。
+        // ちなみに、C#だと、nullを足しても空文字になります。
+        // ただ、ログに出力するときとかは、nullって出たほうがわかりやすいのでデバッグには良かったりすることも。
+        // 些細な違いで優劣はそこまでないのですが、言語によってこういう細かい挙動が変わったりするもので。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +77,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => oneman
         // seaにlandの"onman"を代入後、landに新たに文字列連携しているが、その変更後のものをseaに再代入していない
         // なのでonemanだけしか出力されないと考えた。
-
+        // TODO ishihara [いいね] 変数のインスタンスの違いよく理解されていますね by jflute (2025/07/10)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -79,6 +89,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => 415
         // 先ほどの問題と同様に、seaに代入した後にlandをincrementしてもseaの値には影響がない
         // 値渡しではなく参照渡しであれば、共通のアドレスを見ているので、landの変更に影響されると思う。
+        // TODO ishihara [いいね] 後のエクササイズで出てきていますが、mutableな参照渡しなら色々変わりますよね^^ by jflute (2025/07/10)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -93,6 +104,14 @@ public class Step01VariableTest extends PlainTestCase {
         // seaに415を代入して、そこから2回addされているので417だと考えていた。
         // 最後のsea.add(new BigDecimal(1)はその結果を代入する先がなかったので加算されず、416という結果が出たと考える。
         // ちなみにBigDecimalを使うと計算の誤差を発生させずに十進数での計算ができるよう
+        // TODO ishihara [ふぉろー] そう、add() が自分に足すのか？足した結果を戻すのか？ by jflute (2025/07/10)
+        // 両方のパターンがあるので、わかってないと挙動が読めないんですよね。
+        // 後の思考コメントで登場していますが、Immutable なクラスなのかどうか？これで変わってきます。
+        // IDE上で BigDecimal にカーソルを当てて、JavaDocコメントを表示してみてください。(ツールチップ)
+        // 一言目に、immutable で書いてあります。それだけ重要な情報ということですね。
+        
+        // TODO jflute 1on1にて、immutableの追加の補足話をする予定 (2025/07/10)
+        // (↑このtodoは、ぼくのtodoなので、そのまま残しておいてください。1on1のときに話したらdoneします)
     }
 
     // ===================================================================================
@@ -135,6 +154,11 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => bigband|1|null|burn
         // helpInstanceメソッドの中でそれぞれのインスタンスに対して、代入、incrementされていてその結果が反映されて出力されると考えた。
         // instanceHangerは何も代入されていないのでnullのまま
+        // TODO ishihara [ふぉろー] ここはややこしいですよね。呼び出し側の引数指定の変数と、メソッド引数名が同じですが... by jflute (2025/07/10)
+        // 「引数指定の変数」と「メソッド引数」は、たまたま名前が同じだけの別の変数(入れ物)なんですね。
+        // instanceMagiclamp = "burn"; は、スコープの短い引数(変数)に対して、元々の "magician" へのアドレス参照を破棄して、
+        // "burn" へのアドレス参照に差し替えて、その次の行にはメソッドが終わってその変数は破棄、ということで。
+        // helpメソッド内では、インスタンス変数のinstanceMagiclampは一切登場していないわけですね。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -159,7 +183,10 @@ public class Step01VariableTest extends PlainTestCase {
         // 実際はharbor
         // Stringは特殊な参照型でimmutableであるため、一度宣言されると変更不可能。新しいStringが必要
         // なのでconcatしたときに何も代入先がないので意味はなかった。
-        // intはそもそもプリミティブ型なので値渡しでただ関数に数値のコピーを渡しているだけでメソッドないでどういじっても反映されない
+        // intはそもそもプリミティブ型なので値渡しでA関数に数値のコピーを渡しているだけでメソッドないでどういじっても反映されない
+        // TODO ishihara [いいね] そう、String も immutable なので、インスタンス自体は変わらないわけですね。 by jflute (2025/07/10)
+        // immutable は戻り値を無視すると何も起きないってのが注意ではあります。
+        // concat() にカーソルを当てて JavaDoc を読むと「戻す」ってことがわかります。
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -198,6 +225,11 @@ public class Step01VariableTest extends PlainTestCase {
         // そのseaはhelpMethodArgumentVariable内で作られたローカル変数と扱われると考えた
         // sea = new と新しいのが作られているところからわかる
         // よってこのメソッド内では受け取ったseaに対しては何もしていないと考えた。
+        // TODO ishihara [いいね] ここは色々と罠が多いですが、StringBuilderインスタンスがもう一つ作られてるところがポイント。 by jflute (2025/07/10)
+        // 二個のStringBuilderインスタンス (2インスタンス) がどこにいるか？ってのが読み解けるかどうかのエクササイズでした。
+        // 極論、プログラムを見て、そこに変数が何個あって、インスタンスが何個あるのか？それらがどうつながってるのか？
+        // これがイメージできるようになって欲しいという思いがあります。
+        // けっこう曖昧でもお仕事の実装はできなくはないのですが、ここぞってときにミスって本番トラブルっての見ることあるので。
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -229,6 +261,8 @@ public class Step01VariableTest extends PlainTestCase {
         // define variables here
         String sea = "mystic";
         Integer land = null;
+        // TODO ishihara piariはインスタンス変数と要件に書いてあるので、メソッドの外側に宣言しましょう by jflute (2025/07/10)
+        // (エクササイズなので、宣言場所はこのメソッドの近くでOKです)
         int piari = 0;
         sea = sea + "," + land + "," + piari;
         log(sea);
@@ -255,7 +289,22 @@ public class Step01VariableTest extends PlainTestCase {
 
         processData(name, greeting, age);
 
-        log(greeting);
+        // TODO ishihara [ざつだん] やってみた by jflute (2025/07/10)
+        log(greeting); // your answer? => Hello, I'm TAIGA (o)
+        // ドキドキした...1つ目のStringBuilderインスタンス、どこにも冒険に出てないよなぁって探して、
+        // processメソッドでは途中で切り離されていて、後半は2つ目のStringBuilderしかいじってないと。
+        // greeting変数は単なる引数の変数なので、1つ目インスタンスへの参照が2つ目のインスタンスへの参照に差し替わっただけ。
+        // 意外に盲点になりそうなのが、さりげなく1行目でtoUpperCase()してるところ。元のStringインスタンスは変わらないが、
+        // 引数変数のnameの参照先を大文字のものに差し替えてからappendしているので表示は大文字。
+        // あー、良かったーーー。ぼくがこれで間違ったらやばいので笑
+        //
+        // で、ぼく自身がちょっとやってみて思ったのですが、ぼくはやはりインスタンス中心に見てる感覚ありますね。
+        // 変数は単なるコントローラーみたいな感じで、参照のための名前付きリモコン。
+        // よく新人のjavatryフォローしてると、「greetingインスタンス」みたいな感覚になってしまう方がわりといて、
+        // 変数とインスタンスを合体させて認識しちゃってたりすると、複雑になったときによくわからなくなっちゃうみたいな。
+        //
+        // まあ、だからこそ immutable ってのはその複雑性が減らす手法の一つってところがあるのかもしれません。
+        // (生成されるインスタンスの数は増えますけど、中間成果物インスタンスなのでそこまで気にしなくてもいいので)
     }
 
     private void processData(String name, StringBuilder greeting, int age){
