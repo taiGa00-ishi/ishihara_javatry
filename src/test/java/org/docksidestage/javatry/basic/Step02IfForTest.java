@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.docksidestage.unit.PlainTestCase;
 
+// TODO ishihara javadocのauthor by jflute (2025/07/14)
 /**
  * The test of if-for. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
@@ -112,9 +113,10 @@ public class Step02IfForTest extends PlainTestCase {
         // 最後のif文では(land)つまりlandがtrueの時に入る。
         // ここでseaが10に変更されるので出力は10となる
 
-        // TODO done ishihara [いいね] "1個目の大きな条件分岐のブロック" という言葉が、全体の構造がちゃんと頭に入ってる証拠ですね by jflute (2025/07/10)
+        // done ishihara [いいね] "1個目の大きな条件分岐のブロック" という言葉が、全体の構造がちゃんと頭に入ってる証拠ですね by jflute (2025/07/10)
         
-        // TODO jflute 1on1にて、ソースコードリーディングのよもやま話をする予定 (2025/07/10)
+        // done jflute #1on1 にて、ソースコードリーディングのよもやま話をする予定 (2025/07/10)
+        // 漠然読み(構造を把握) => フォーカス読み(知りたいところピンポイントで)
     }
 
     // ===================================================================================
