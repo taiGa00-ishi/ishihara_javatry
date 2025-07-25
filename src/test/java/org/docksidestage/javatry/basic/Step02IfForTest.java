@@ -26,7 +26,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author taiGa00-ishi
  */
 public class Step02IfForTest extends PlainTestCase {
 
@@ -132,8 +132,10 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // prepareStageList()では４つの文字列を配列に格納している、格納されているもののインデックスは0から始まり3まで
+    // そのため、iが1の時は2番目の要素であるdocksideが取得され、seaに格納される
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
@@ -142,8 +144,11 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
+    // このfor文ではstageListの要素の範囲が抜けるまで回り続ける繰り返し処理だと考えた。
+    // 一回のループで配列の先頭から順番に代入される
+    // 最後に代入されるmagiclampのみがseaに格納されていると考えた。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -158,8 +163,10 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hanger
     }
+    // 最初のif文のbrで始まるものがあればcontinueはあまりこの中のロジックでは意味のないイメージ
+    // このループが終わるタイミングをみるとgaが文字列に含まれていた時に終わるのでその時に格納されているhangerが答えになると考えた。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
@@ -174,8 +181,12 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // sbはインスタンスが作られて何も操作されていないので、基本的にはlengthは0。
+    // ただforループでstageがdocksideの時にsbにappend（追加）される。
+    // そのためsbの長さは0より大きくなりreturnされる。
+    // そのsbをseaに代入するので出力はdocksideであると考えた。
 
     // ===================================================================================
     //                                                                           Challenge
@@ -185,7 +196,19 @@ public class Step02IfForTest extends PlainTestCase {
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
     public void test_iffor_making() {
-        // write if-for here
+        List<String> result = new ArrayList<>();
+        List<String> stageList = prepareStageList();
+
+        stageList.forEach(stage ->
+        {
+            if (stage.contains("a")){
+                result.add(stage);
+            }
+        });
+
+        for (String element: result){
+            log(element);
+        }
     }
 
     // ===================================================================================
@@ -197,18 +220,30 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
+        String sea;
+        StringBuilder str = new StringBuilder();
+//        for (String stage : stageList) {
+//            if (stage.startsWith("br")) {
+//                continue;
+//            }
+//            sea = stage;
+//            if (stage.contains("ga")) {
+//                break;
+//            }
+//        }
+        stageList.forEach(stage ->{
             if (stage.startsWith("br")) {
-                continue;
+                return; // continue
             }
-            sea = stage;
             if (stage.contains("ga")) {
-                break;
+                 str.append(stage);
+                return; // break
             }
-        }
+        });
+        sea = str.toString();
         log(sea); // should be same as before-fix
     }
+    // continueに置き換わるとこもそもそもいらない気がする（次のlistの要素にいくだけ）
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
@@ -216,12 +251,44 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * 以下のコードからログには何が出力されるでしょうか？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
-        // write your code here
+        List<Integer> numbers = new ArrayList<>();
+        numbers.add(10);
+        numbers.add(5);
+        numbers.add(20);
+        numbers.add(15);
+        numbers.add(30);
+
+        String result = "";
+        int sum = 0;
+
+        for (int i = 0; i < numbers.size(); i++) {
+            int currentNum = numbers.get(i);
+
+            if (currentNum % 2 == 0) {
+                if (currentNum > 15) {
+                    sum += currentNum;
+                    result = "Big Even";
+                } else {
+                    result = "Small Even";
+                }
+            } else {
+                if (currentNum < 10) {
+                    result = "Small Odd";
+                } else {
+                    result = "Big Odd";
+                }
+            }
+
+            if (sum > 20) {
+                break;
+            }
+        }
+        log(result + ":" + sum);
     }
 
     // ===================================================================================

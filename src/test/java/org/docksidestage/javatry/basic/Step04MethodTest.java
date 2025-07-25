@@ -22,7 +22,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author taiGa00-ishi
  */
 public class Step04MethodTest extends PlainTestCase {
 
@@ -35,16 +35,22 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_call_basic() {
         String sea = supplySomething();
-        log(sea); // your answer? =>
+        log(sea); // your answer? => over
     }
+    // supplySomething()メソッドの中でseaに"over"が代入されているので、log(sea)で"over"が出力される
+    // supplySomething()メソッド自体が呼ばれた時はその関数内に設定されているログも出るin supply: {}の形で
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mysmys
     }
+    // functionSomething()メソッドの中で引数の"mystic"が"mys"に置き換えられ、returnされ、seaに入ってくる
+    // consumeSomething()メソッドは引数の"over"が"mystic"に置き換えられ、ログに出力される
+    // ただ、これは最後のseaの出力に影響はない
+    // runnableSomething()メソッドは引数の"outofshadow"がログに出力されるだけで、seaの出力には影響しない
 
     private String functionSomething(String name) {
         String replaced = name.replace("tic", "mys");

@@ -26,7 +26,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author taiGa00-ishi
  */
 public class Step03DataTypeTest extends PlainTestCase {
 
@@ -54,8 +54,16 @@ public class Step03DataTypeTest extends PlainTestCase {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
+
+    // 色々変数がある中で最終的にはseaだけ見ているので逆算してseaの値について最後処理されているところを見た
+    // seaにはaddedDecimalの値が入ることを発見
+    // addedDecimalはambaにlandを足した値ということがわかる
+    // ambaは9.4とわかる
+    // landはまた色々と変数が操作されているのでそれを追っていくと9だとわかる
+    // なので9.4と9を足した値は18.4がString型に変換されてseaに入ることがわかる
+    // よって出力は18.4となると考えた。
 
     // ===================================================================================
     //                                                                           Primitive
@@ -82,8 +90,20 @@ public class Step03DataTypeTest extends PlainTestCase {
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
+
+    // 実際は2
+    // seaが最後に書きかわりそうなところから見ていった。
+    // dstoreが1.1fとあり、piariが1とあるので条件が成立すると勘違いして0と考えた。
+    // しかし、dstoreはfloat型でintにキャストされているので1.1fは1となり条件が成立しない。
+    // そのため、seaは最後のif文には入らない
+    // その前のif文では、dohotelがtrueであるため、bonvoはseaの値127が入る。
+    // その後、landはbonvoの値127が入る。
+    // その後、bonvoはpiariの値1が入る。
+    // その後、seaはlandの値127が入る。
+    // その後、ambaは2.3Dとあるので、最後のif文に入る。
+    // そのため、seaは(2.3Dをbyteにキャストした値)2が入る。
 
     // ===================================================================================
     //                                                                              Object
@@ -92,8 +112,11 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_object() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
+
+    // seaに代入するstage.getStageName()はSt3ImmutableStageのインスタンスであるsatgeのメソッドgetStageName()を呼び出している。
+    // インスタンス生成の際に"hangar"という文字列を引数に渡しているので、getStageName()はその文字列を返す。
 
     private static class St3ImmutableStage {
 
