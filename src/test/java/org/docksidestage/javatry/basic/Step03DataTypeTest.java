@@ -64,6 +64,8 @@ public class Step03DataTypeTest extends PlainTestCase {
     // landはまた色々と変数が操作されているのでそれを追っていくと9だとわかる
     // なので9.4と9を足した値は18.4がString型に変換されてseaに入ることがわかる
     // よって出力は18.4となると考えた。
+    
+    // #1on1: オブジェクト型のBooleanは、ほとんど使われる場面はない。二値を保証したいから。
 
     // ===================================================================================
     //                                                                           Primitive
@@ -104,8 +106,10 @@ public class Step03DataTypeTest extends PlainTestCase {
     // その後、seaはlandの値127が入る。
     // その後、ambaは2.3Dとあるので、最後のif文に入る。
     // そのため、seaは(2.3Dをbyteにキャストした値)2が入る。
-    // TODO ishihara [いいね] ややこしいですよね(^^。縮小型変換などは要注意というところです。 by jflute (2025/07/28)
+    // done ishihara [いいね] ややこしいですよね(^^。縮小型変換などは要注意というところです。 by jflute (2025/07/28)
     // 通常、そもそもこういうプログラムは書かないようにするって感じですね(^^
+    
+    // #1on1: プリミティブ型の現場での活用のされ方についての補足 (2025/07/28)
 
     // ===================================================================================
     //                                                                              Object
@@ -119,6 +123,7 @@ public class Step03DataTypeTest extends PlainTestCase {
 
     // seaに代入するstage.getStageName()はSt3ImmutableStageのインスタンスであるsatgeのメソッドgetStageName()を呼び出している。
     // インスタンス生成の際に"hangar"という文字列を引数に渡しているので、getStageName()はその文字列を返す。
+    // #1on1: 自分でimmutableなクラスを作るってなったら、こんなかんじのクラスになる (2025/07/28)
 
     private static class St3ImmutableStage {
 
@@ -127,7 +132,7 @@ public class Step03DataTypeTest extends PlainTestCase {
         public St3ImmutableStage(String stageName) {
             this.stageName = stageName;
         }
-
+        
         public String getStageName() {
             return stageName;
         }

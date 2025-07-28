@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.docksidestage.unit.PlainTestCase;
 
-// TODO ishihara javadocのauthor by jflute (2025/07/14)
+// done ishihara javadocのauthor by jflute (2025/07/14)
 /**
  * The test of if-for. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
@@ -149,6 +149,7 @@ public class Step02IfForTest extends PlainTestCase {
     // このfor文ではstageListの要素の範囲が抜けるまで回り続ける繰り返し処理だと考えた。
     // 一回のループで配列の先頭から順番に代入される
     // 最後に代入されるmagiclampのみがseaに格納されていると考えた。
+    // #1on1: 普通のfor文とは？
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -187,6 +188,16 @@ public class Step02IfForTest extends PlainTestCase {
     // ただforループでstageがdocksideの時にsbにappend（追加）される。
     // そのためsbの長さは0より大きくなりreturnされる。
     // そのsbをseaに代入するので出力はdocksideであると考えた。
+    
+    // #1on1: forEach()はただのメソッドであって文法ではない。 (2025/07/28)
+    // 中で文法としてのfor文を代理しているだけ。
+    // コンピューター的にはループなのかどうか？って厳密にはわかってない。
+    // なので、continueもbreakも使えない。メソッドなのでreturnは使える。
+    
+    // #1on1: forEach()制約多いけど何が良い？ => クローズドだから安全な面もあるかも？ by ishiharaさん
+    // 外側の世界に影響を与えにくい方が、安心/安全という考え方にもなる。(できない方が安全)
+    // 実際の現場では、わりと素直に回すループの方が圧倒的に多いので、continue,breakでこねくり回せないループが向いてる。
+    // 副作用という言葉。
 
     // ===================================================================================
     //                                                                           Challenge
@@ -221,6 +232,8 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String sea;
+        // TODO ishihara StringBuilderの変数は、sbみたいに付けることが多いです by jflute (2025/07/28)
+        // str だと、本当にただの String なのかな？という風に見えちゃう。(これはJavaの世界の感覚なので最初は知らなくて当然)
         StringBuilder str = new StringBuilder();
 //        for (String stage : stageList) {
 //            if (stage.startsWith("br")) {
@@ -244,6 +257,8 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // should be same as before-fix
     }
     // continueに置き換わるとこもそもそもいらない気がする（次のlistの要素にいくだけ）
+    // #1on1: 確かに、もう後続の処理がないので、gaの方のreturnはしなくても大丈夫かも。
+    // brの方のreturnは、例えば "brga" というような文字列の場合にskipさせないといけないので必要。
     // TODO ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
     // また、hangar の後に bongar という別の文字列が存在したときに、同じ結果になるでしょうか？
     // そういった stageList の内容が変わるケースでも、結果が同じになるようにしてみましょう。
@@ -293,7 +308,7 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(result + ":" + sum);
     }
-    // TODO ishihara [いいね] ふはー、合ってた、良かったー。難しい良いエクササイズですね(^^ by jflute (2025/07/28)
+    // done ishihara [いいね] ふはー、合ってた、良かったー。難しい良いエクササイズですね(^^ by jflute (2025/07/28)
 
     // ===================================================================================
     //                                                                        Small Helper
