@@ -244,6 +244,9 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // should be same as before-fix
     }
     // continueに置き換わるとこもそもそもいらない気がする（次のlistの要素にいくだけ）
+    // TODO ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
+    // また、hangar の後に bongar という別の文字列が存在したときに、同じ結果になるでしょうか？
+    // そういった stageList の内容が変わるケースでも、結果が同じになるようにしてみましょう。
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
@@ -290,6 +293,7 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(result + ":" + sum);
     }
+    // TODO ishihara [いいね] ふはー、合ってた、良かったー。難しい良いエクササイズですね(^^ by jflute (2025/07/28)
 
     // ===================================================================================
     //                                                                        Small Helper
