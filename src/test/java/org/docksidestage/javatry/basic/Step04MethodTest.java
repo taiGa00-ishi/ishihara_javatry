@@ -82,8 +82,14 @@ public class Step04MethodTest extends PlainTestCase {
         if (!land) {
             sea = sea + mutable.getStageName().length();
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910
     }
+
+    // int seaはプリミティブ型（Immutable）な値なのでhelloMutable()メソッド内での変更は影響しない
+    // boolean landはプリミティブ型（Immutable）なので、helloMutable()メソッド内での変更は影響しない
+    // St4MutableStage piariはオブジェクト型（Mutable）なので、helloMutable()メソッド内での変更は影響する
+    // if文の中でlandがfalseなので、seaは904 + "mystic"の長さとなる
+    // "mystic"の長さは6なので、最終的にseaは910となる
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
         sea++;
@@ -121,8 +127,13 @@ public class Step04MethodTest extends PlainTestCase {
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
+
+    // hasAnnualPassportは本体のメソッドでtrueに設定される。
+    // 引数として渡されるhasAnnualPassportはメソッド内で変更されるが、これはローカル変数であり、インスタンス変数には影響しない。
+    // goToPark()メソッドではインスタンス変数を引数として使っておらず、直接値にアクセスするので、変更が反映される。
+    // そのため、100回のループでinParkCountが100回増加し、最終的にseaは100となる。
 
     private void offAnnualPassport(boolean hasAnnualPassport) {
         hasAnnualPassport = false;
@@ -156,14 +167,49 @@ public class Step04MethodTest extends PlainTestCase {
      * o showSea(): 一つのString引数、戻り値なし、引数をlog()で表示する
      * </pre>
      */
+
+    private boolean availableLogging;
+
     public void test_method_making() {
-        // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea);
+        }
     }
 
     // write methods here
+    private String replaceAwithB(String str){
+        int length = str.length();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < length; i++){
+            char c = str.charAt(i);
+            if (c == 'A'){
+                sb.append('B');
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+
+        // return str.replace("A", "B");
+        // ライブラリ使用バージョン
+    }
+
+    private String replaceCwithB(String str){
+        return str.replace("C", "B");
+    }
+
+    private String quote(String str, String quotation) {
+        return quotation + str + quotation;
+    }
+
+    private boolean isAvailableLogging() {
+        availableLogging = true;
+        return availableLogging;
+    }
+
+    private void showSea(String sea) {
+        log(sea);
+    }
 }

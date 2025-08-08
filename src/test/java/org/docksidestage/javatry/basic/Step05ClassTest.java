@@ -28,7 +28,7 @@ import org.docksidestage.unit.PlainTestCase;
  * (要件が曖昧なところがあれば、適切だと思われる仕様を決めても良いです)
  * 
  * @author jflute
- * @author your_name_here
+ * @author taiGa00-ishi
  */
 public class Step05ClassTest extends PlainTestCase {
 
@@ -43,29 +43,46 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
+    // 最初にTicketBoothのインスタンスが作成されたときにこのインスタンスが持っているプロパティは
+    // quantityが10、salesProceedsがnull
+    // buyOneDayPassportメソッドを呼び出した時にhandedMoneyに7400が渡される
+    // その後、quantityが1減って9になり、salesProceedsに7400が入る
+    // getQuantityメソッドを呼び出すと先ほど1枚減った9枚のquantityとしてseaに入る
+
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_overpay() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000　→ 修正後　7400
     }
+    // buyOneDayPassportメソッドを呼び出した時にhandedMoneyに10000が渡される
+    // その後、quantityが1減って9になり、salesProceedsに10000(handedMoney)が入る
+    // getSalesProceedsメソッドを呼び出すとsalesProceedsの値である10000がseaに入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
+    // TicketBoothのインスタンスが作成されたときにsalesProceedsはnullで初期化されている
+    // 先ほどと違い、buyOneDayPassportメソッドを呼び出していない
+    // そのため、getSalesProceedsメソッドを呼び出すとsalesProceedsの値であるnullがseaに入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9　→ 修正後　10
     }
+    // 色々エラーメッセージがまず出現する
+    // なぜなら渡すお金が7400より小さく足りないのでExceptionが帰ってくる
+    // doTest_class_ticket_wrongQuantityメソッドの中でもエラーをキャッチしたらメッセージを出すようにしている
+    // しかしbuyOneDayPassportメソッドを呼び出した時にquantityが0でないかぎりは1減る
+    // チケットを買っていなくても、quantityは1減る実装になっている
 
     private Integer doTest_class_ticket_wrongQuantity() {
         TicketBooth booth = new TicketBooth();
@@ -90,6 +107,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
     }
+    // quantityが減るタイミングをhandedMoneyとチケット代のチェックが終わったタイミングに変更
 
     /**
      * Fix the problem of sales proceeds increased by handed money. (Don't forget to fix also previous exercise answers) <br>
@@ -101,6 +119,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
     }
+    // salesProceedsに追加されていくものはチケット代そのものに切り替え（handedMoney → ONE_DAY_PRICE）
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
@@ -108,13 +127,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money);
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
+        log(booth.getQuantity());
     }
 
     /**
