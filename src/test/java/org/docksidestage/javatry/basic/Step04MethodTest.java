@@ -178,6 +178,8 @@ public class Step04MethodTest extends PlainTestCase {
         }
     }
 
+    // TODO ishihara [いいね] privateメソッドの定義順、呼び出し順序に一致してて直感的にわかりやすい by jflute (2025/08/14)
+    // #1on1: privateメソッドの定義順、jfluteの一例の紹介、何かしらカテゴリを意識してもらえると嬉しい。
     // write methods here
     private String replaceAwithB(String str){
         int length = str.length();
@@ -212,4 +214,5 @@ public class Step04MethodTest extends PlainTestCase {
     private void showSea(String sea) {
         log(sea);
     }
+    
 }

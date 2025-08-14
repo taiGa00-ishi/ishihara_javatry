@@ -72,7 +72,7 @@ public class TicketBooth {
     }
 
     public int buyTwoDayPassport(Integer handedMoney){
-        if (quantity <= 0){
+        if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
         if (handedMoney < TWO_DAY_PRICE){
@@ -83,6 +83,7 @@ public class TicketBooth {
         --quantity;
         if (salesProceeds != null) {
             salesProceeds = salesProceeds + TWO_DAY_PRICE;
+            // TODO ishihara これだと、2回目以降の購入の金額合計を引くので、マイナスな可能性あり by jflute (2025/08/14)
             change = handedMoney -  salesProceeds;
         } else {
             salesProceeds = TWO_DAY_PRICE;
@@ -90,6 +91,10 @@ public class TicketBooth {
         }
         return change;
     }
+    // #1on1: 時間を置いた自己レビューをするといい (2025/08/14)
+    // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
+    // (jfluteの一例を紹介)
+    // #1on1: IntelliJ上での冗長部分の指摘について。
 
     public static class TicketSoldOutException extends RuntimeException {
 
