@@ -95,6 +95,8 @@ public class TicketBooth {
     // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
     // (jfluteの一例を紹介)
     // #1on1: IntelliJ上での冗長部分の指摘について。
+    // #1on1: 在庫共有型？在庫分離型？どっちにするか話
+    // この目線は業務でとても大事 by いしはらさん
 
     public static class TicketSoldOutException extends RuntimeException {
 
@@ -120,7 +122,7 @@ public class TicketBooth {
     public int getQuantity() {
         return quantity;
     }
-
+    
     public Integer getSalesProceeds() {
         return salesProceeds;
     }
