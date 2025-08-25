@@ -224,6 +224,8 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // TODO ishihara 修行++: nightOnlyのTwoDayが混じってしまう by jflute (2025/08/25)
+        // "正確に" がポイント。今後、チケットの種別が色々な方向性で増えても判定ロジックが変わらないようにしたい
         if (ticket.getValidDays() == 2) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -307,11 +309,18 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
+    // #1on1: Ticketクラスは多くの人が利用するクラスと想定して (2025/08/25)
+    // 質問: 現場であんまりコメント見かけないけど、どういうルールなんだろう？
+    // 回答: 恐らくルール自体がないだろう。コメントは義務にならないものなので。
+    // ただ、コメントを上手に書ける人だからこそ、書かなくて良いかどうかの判断できる。
+    // (あと、コメントは書かないと上手にならない。一回書きすぎるくらいの体験があると良い)
+    // #1on1: 本気で書いた場合のサンプル NxBatchRecorder を紹介
+    // あと、他社さんの例:
     /**
-     * Write intelligent comments on source code to the main code in buyticket package. <br>
-     * (buyticketパッケージのクラスに、気の利いたコメントを追加してみましょう)
+     * Write intelligent JavaDoc comments seriously on the public classes/constructors/methods of the Ticket class. <br>
+     * (Ticketクラスのpublicなクラス/コンストラクター/メソッドに、気の利いたJavaDocコメントを本気で書いてみましょう)
      */
-    public void test_class_moreFix_yourSuperComments() {
+    public void test_class_moreFix_yourSuperJavaDoc() {
         // your confirmation code here
     }
 }

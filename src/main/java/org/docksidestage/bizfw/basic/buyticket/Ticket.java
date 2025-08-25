@@ -23,6 +23,8 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // TODO ishihara [いいね] 定義位置がわかりやすい。contructorの引数の順序と同じで... by jflute (2025/08/25)
+    // 固定値と動的に変わる値で区別されているのでGood。
     private final int displayPrice;
     private final int validDays;
     private final boolean nightOnly;
@@ -42,6 +44,11 @@ public class Ticket {
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
+    // #1on1: 引数isNight方式だと、ユーザーが自分で夜かどうかを決められてしまう。
+    // なので内部で現在日時からisNightを導けると、完全に間違いを防ぐことはできる。
+    // だがしかし、UnitTestに都合がめちゃ悪い。
+    // TODO ishihara 修行++: UnitTestの都合の解決しつつ、内部で夜の判定は隠蔽したいところ by jflute (2025/08/25)
+    // いったんまず内部で判定するプログラムにして、UnitTestの都合の解決を最後にって感じで段階踏んでOK。
     public void doInPark(boolean isNight) {
         if (usedDays >= validDays && alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
@@ -57,6 +64,7 @@ public class Ticket {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    // TODO ishihara どうせなら、getterもインスタンス変数の順序を合わせてもらえたらと by jflute (2025/08/25)
     public int getDisplayPrice() {
         return displayPrice;
     }

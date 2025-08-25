@@ -52,6 +52,7 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
+    // TODO ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -59,6 +60,11 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
+        // TODO ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)
+        // 一方で、ほんのわずかな無駄処理は許容して、Result受け取ってgetTicket()でもいいし...
+        // #1on1: その程度の問題のお話をさせて頂きました。(2025/08/25)
+        //TicketBuyResult xxx = buyTicketOperation(handedMoney, ONE_DAY_PRICE ,1, false);
+        //return xxx.getTicket();
         return buyTicketOperation(handedMoney, ONE_DAY_PRICE ,1, false);
     }
 
@@ -88,7 +94,9 @@ public class TicketBooth {
     }
 
 
-
+    // TODO ishihara publicメソッドと実処理のprivateメソッドで先頭文字が同じだと補完時に区別つきづらい by jflute (2025/08/25)
+    // e.g. doBuyTicket(), internalBuyTicket()
+    // IntelliJでrename機能があるのでそれで直してみましょう。
     private Ticket buyTicketOperation(int handedMoney, int ticketPrice, int validDays, boolean nightOnly) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
