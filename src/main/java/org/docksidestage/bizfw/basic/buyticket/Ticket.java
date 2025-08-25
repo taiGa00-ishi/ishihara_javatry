@@ -23,24 +23,35 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private final int displayPrice; // written on ticket, park guest can watch this
-    private boolean alreadyIn; // true means this ticket is unavailable
+    private final int displayPrice;
+    private final int validDays;
+    private final boolean nightOnly;
+    private int usedDays;
+    private boolean alreadyIn;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
+    public Ticket(int displayPrice, int validDays, boolean nightOnly) {
         this.displayPrice = displayPrice;
+        this.validDays = validDays;
+        this.nightOnly = nightOnly;
+        this.usedDays = 0;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
-    public void doInPark() {
-        if (alreadyIn) {
+    public void doInPark(boolean isNight) {
+        if (usedDays >= validDays && alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
+
+        if (this.nightOnly && !isNight) {
+            throw new IllegalStateException("You cannot enter by night-only ticket in the daytime.");
+        }
         alreadyIn = true;
+        usedDays++;
     }
 
     // ===================================================================================
@@ -53,4 +64,17 @@ public class Ticket {
     public boolean isAlreadyIn() {
         return alreadyIn;
     }
+
+    public int getValidDays() {
+        return validDays;
+    }
+
+    public int getUsedDays() {
+        return usedDays;
+    }
+
+    public boolean isNightOnly() {
+        return nightOnly;
+    }
+
 }

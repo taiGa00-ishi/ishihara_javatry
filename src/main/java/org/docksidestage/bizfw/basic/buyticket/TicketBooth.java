@@ -26,6 +26,8 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -56,40 +58,15 @@ public class TicketBooth {
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    public void buyOneDayPassport(Integer handedMoney) {
-        if (quantity <= 0) {
-            throw new TicketSoldOutException("Sold out");
-        }
-        if (handedMoney < ONE_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
-        --quantity;
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + ONE_DAY_PRICE;
-        } else { // first purchase
-            salesProceeds = ONE_DAY_PRICE;
-        }
+    public Ticket buyOneDayPassport(Integer handedMoney) {
+        return buyTicketOperation(handedMoney, ONE_DAY_PRICE ,1, false);
     }
 
-    public int buyTwoDayPassport(Integer handedMoney){
-        if (quantity <= 0) {
-            throw new TicketSoldOutException("Sold out");
-        }
-        if (handedMoney < TWO_DAY_PRICE){
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
-        int change;
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
+        Ticket ticket = buyTicketOperation(handedMoney, TWO_DAY_PRICE, 2, false);
+        int change = handedMoney - TWO_DAY_PRICE;
 
-        --quantity;
-        if (salesProceeds != null) {
-            salesProceeds = salesProceeds + TWO_DAY_PRICE;
-            // TODO ishihara これだと、2回目以降の購入の金額合計を引くので、マイナスな可能性あり by jflute (2025/08/14)
-            change = handedMoney -  salesProceeds;
-        } else {
-            salesProceeds = TWO_DAY_PRICE;
-            change = handedMoney - TWO_DAY_PRICE;
-        }
-        return change;
+        return new TicketBuyResult(ticket, change);
     }
     // #1on1: 時間を置いた自己レビューをするといい (2025/08/14)
     // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
@@ -97,6 +74,36 @@ public class TicketBooth {
     // #1on1: IntelliJ上での冗長部分の指摘について。
     // #1on1: 在庫共有型？在庫分離型？どっちにするか話
     // この目線は業務でとても大事 by いしはらさん
+
+    public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
+        Ticket ticket = buyTicketOperation(handedMoney, FOUR_DAY_PRICE, 4, false);
+        int change = handedMoney - FOUR_DAY_PRICE;
+        return new TicketBuyResult(ticket, change);
+    }
+
+    public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
+        Ticket ticket = buyTicketOperation(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true);
+        int change = handedMoney - NIGHT_ONLY_TWO_DAY_PRICE;
+        return new TicketBuyResult(ticket, change);
+    }
+
+
+
+    private Ticket buyTicketOperation(int handedMoney, int ticketPrice, int validDays, boolean nightOnly) {
+        if (quantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        if (handedMoney < ticketPrice) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+        --quantity;
+        if (salesProceeds != null) {
+            salesProceeds = salesProceeds + ticketPrice;
+        } else {
+            salesProceeds = ticketPrice;
+        }
+        return new Ticket(ticketPrice, validDays, nightOnly);
+    }
 
     public static class TicketSoldOutException extends RuntimeException {
 
