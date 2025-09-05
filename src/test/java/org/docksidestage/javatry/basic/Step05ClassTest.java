@@ -19,6 +19,7 @@ import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
 import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
+import org.docksidestage.bizfw.basic.buyticket.TicketType;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -162,7 +163,7 @@ public class Step05ClassTest extends PlainTestCase {
         Ticket oneDayPassport = booth.buyOneDayPassport(10000);
         log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
         log(oneDayPassport.isAlreadyIn()); // should be false
-        oneDayPassport.doInPark(false);
+        oneDayPassport.doInPark();
         log(oneDayPassport.isAlreadyIn()); // should be true
     }
 
@@ -193,16 +194,16 @@ public class Step05ClassTest extends PlainTestCase {
         log(twoDayPassport.getUsedDays());
 
         // 1日目
-        twoDayPassport.doInPark(false);
+        twoDayPassport.doInPark();
         log(twoDayPassport.getUsedDays());
 
         // 2日目
-        twoDayPassport.doInPark(false);
+        twoDayPassport.doInPark();
         log(twoDayPassport.getUsedDays());
 
         // 3日目
         try {
-            twoDayPassport.doInPark(false);
+            twoDayPassport.doInPark();
         } catch (IllegalStateException e) {
             log(e.getMessage());
         }
@@ -224,9 +225,14 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
-        // TODO ishihara 修行++: nightOnlyのTwoDayが混じってしまう by jflute (2025/08/25)
+        // TODO [done] ishihara 修行++: nightOnlyのTwoDayが混じってしまう by jflute (2025/08/25)
         // "正確に" がポイント。今後、チケットの種別が色々な方向性で増えても判定ロジックが変わらないようにしたい
-        if (ticket.getValidDays() == 2) { // write determination for two-day passport
+        // 同じdaysでも価格帯だけは全部異なるので、getTwoDayPriceを追加して、価格で判定した
+        // もし同じ価格帯が出てきたらどうするか
+        // enumでTypeを作って、Ticketに持たせるのが良いかも
+        // 最初はこれで記述
+        // if (ticket.getDisplayPrice() == booth.getTwoDayPrice())
+        if (ticket.getTicketType() == TicketType.TWO_DAY) { // write determination for two-day passport
             log("two-day passport");
         } else {
             log("other");
@@ -249,24 +255,24 @@ public class Step05ClassTest extends PlainTestCase {
         log(fourDayPassport.getUsedDays());
 
         // 1日目
-        fourDayPassport.doInPark(false);
+        fourDayPassport.doInPark();
         log(fourDayPassport.getUsedDays());
 
         // 2日目
-        fourDayPassport.doInPark(false);
+        fourDayPassport.doInPark();
         log(fourDayPassport.getUsedDays());
 
         // 3日目
-        fourDayPassport.doInPark(false);
+        fourDayPassport.doInPark();
         log(fourDayPassport.getUsedDays());
 
         // 4日目
-        fourDayPassport.doInPark(false);
+        fourDayPassport.doInPark();
         log(fourDayPassport.getUsedDays());
 
         // 5日目
         try {
-            fourDayPassport.doInPark(false);
+            fourDayPassport.doInPark();
         } catch (IllegalStateException e) {
             log(e.getMessage());
         }
@@ -286,16 +292,16 @@ public class Step05ClassTest extends PlainTestCase {
         log(twoDayPassport.getUsedDays());
 
         // 1日目
-        twoDayPassport.doInPark(true);
+        twoDayPassport.doInPark();
         log(twoDayPassport.getUsedDays());
 
         // 2日目
-        twoDayPassport.doInPark(true);
+        twoDayPassport.doInPark();
         log(twoDayPassport.getUsedDays());
 
         // 3日目
         try {
-            twoDayPassport.doInPark(true);
+            twoDayPassport.doInPark();
         } catch (IllegalStateException e) {
             log(e.getMessage());
         }

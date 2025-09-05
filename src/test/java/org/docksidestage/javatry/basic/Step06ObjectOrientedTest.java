@@ -32,7 +32,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author TaiGa00-ishi
  */
 public class Step06ObjectOrientedTest extends PlainTestCase {
 
@@ -63,11 +63,14 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         if (quantity <= 0) {
             throw new IllegalStateException("Sold out");
         }
-        --quantity;
+
         if (handedMoney < oneDayPrice) {
             throw new IllegalStateException("Short money: handedMoney=" + handedMoney);
         }
-        salesProceeds = handedMoney;
+        // quantityの減るタイミングをこちらに変更
+        --quantity;
+        // 売り上げに加算されるのは買った金額なのでhandedMoneyではなくoneDayPrice
+        salesProceeds = oneDayPrice;
 
         //
         // [ticket info]
@@ -85,7 +88,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // simulation: actually this process should be called by other trigger
         if (alreadyIn) {
-            throw new IllegalStateException("Already in park by this ticket: displayPrice=" + quantity);
+            // 代入された変数を使用していなかったのでquantityをdisplayPriceに変更
+            throw new IllegalStateException("Already in park by this ticket: displayPrice=" + displayPrice);
         }
         alreadyIn = true;
 
@@ -100,6 +104,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
             // simulation: only logging here (normally e.g. DB insert)
             showTicketBooth(displayPrice, salesProceeds);
             showYourTicket(quantity, alreadyIn);
+            // saveなのにshowだけなのは何でやと思ったら、普通はDB insertすると但し書きがあった
         }
     }
 

@@ -52,24 +52,28 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
-    // TODO ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
+    // TODO [done] ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
+     * @return Ticket 返り値としてはTicketを返す
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
-        // TODO ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)
+        // TODO [done] ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)
         // 一方で、ほんのわずかな無駄処理は許容して、Result受け取ってgetTicket()でもいいし...
         // #1on1: その程度の問題のお話をさせて頂きました。(2025/08/25)
-        //TicketBuyResult xxx = buyTicketOperation(handedMoney, ONE_DAY_PRICE ,1, false);
+        //TicketBuyResult xxx = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false);
         //return xxx.getTicket();
-        return buyTicketOperation(handedMoney, ONE_DAY_PRICE ,1, false);
+        Ticket ticket = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false, TicketType.ONE_DAY);
+        int change = handedMoney - ONE_DAY_PRICE;
+
+        return new TicketBuyResult(ticket, change).getTicket();
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        Ticket ticket = buyTicketOperation(handedMoney, TWO_DAY_PRICE, 2, false);
+        Ticket ticket = doBuyTicket(handedMoney, TWO_DAY_PRICE, 2, false, TicketType.TWO_DAY);
         int change = handedMoney - TWO_DAY_PRICE;
 
         return new TicketBuyResult(ticket, change);
@@ -82,22 +86,23 @@ public class TicketBooth {
     // この目線は業務でとても大事 by いしはらさん
 
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        Ticket ticket = buyTicketOperation(handedMoney, FOUR_DAY_PRICE, 4, false);
+        Ticket ticket = doBuyTicket(handedMoney, FOUR_DAY_PRICE, 4, false, TicketType.FOUR_DAY);
         int change = handedMoney - FOUR_DAY_PRICE;
         return new TicketBuyResult(ticket, change);
     }
 
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
-        Ticket ticket = buyTicketOperation(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true);
+        Ticket ticket = doBuyTicket(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true, TicketType.NIGHT_ONLY_TWO_DAY);
         int change = handedMoney - NIGHT_ONLY_TWO_DAY_PRICE;
         return new TicketBuyResult(ticket, change);
     }
 
 
-    // TODO ishihara publicメソッドと実処理のprivateメソッドで先頭文字が同じだと補完時に区別つきづらい by jflute (2025/08/25)
+    // TODO done ishihara publicメソッドと実処理のprivateメソッドで先頭文字が同じだと補完時に区別つきづらい by jflute (2025/08/25)
     // e.g. doBuyTicket(), internalBuyTicket()
     // IntelliJでrename機能があるのでそれで直してみましょう。
-    private Ticket buyTicketOperation(int handedMoney, int ticketPrice, int validDays, boolean nightOnly) {
+    // rename後にoption + enter(return)で一括修正した
+    private Ticket doBuyTicket(int handedMoney, int ticketPrice, int validDays, boolean nightOnly, TicketType ticketType) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -110,7 +115,7 @@ public class TicketBooth {
         } else {
             salesProceeds = ticketPrice;
         }
-        return new Ticket(ticketPrice, validDays, nightOnly);
+        return new Ticket(ticketPrice, validDays, nightOnly, ticketType);
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -134,6 +139,11 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+
+    public int getTwoDayPrice() {
+        return TWO_DAY_PRICE;
+    }
+
     public int getQuantity() {
         return quantity;
     }
