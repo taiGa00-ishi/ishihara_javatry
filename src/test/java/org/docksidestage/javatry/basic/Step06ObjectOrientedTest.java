@@ -47,6 +47,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      * (OneDayPassportを買って InPark する処理の中で、(simulationを除いて)間違いがいくつかあるので修正しましょう)
      */
     public void test_objectOriented_aboutObject_againstObject() {
+        // TODO ishihara あと3箇所あります (このテスト実行して動作を確認してもOK) by jflute (2025/09/08)
         //
         // [ticket booth info]
         //

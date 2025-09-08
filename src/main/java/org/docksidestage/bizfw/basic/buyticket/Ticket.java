@@ -51,11 +51,17 @@ public class Ticket {
     // #1on1: 引数isNight方式だと、ユーザーが自分で夜かどうかを決められてしまう。
     // なので内部で現在日時からisNightを導けると、完全に間違いを防ぐことはできる。
     // だがしかし、UnitTestに都合がめちゃ悪い。
-    // TODO [doing] ishihara 修行++: UnitTestの都合の解決しつつ、内部で夜の判定は隠蔽したいところ by jflute (2025/08/25)
+    // [doing -> done: 独立] ishihara 修行++: UnitTestの都合の解決しつつ、内部で夜の判定は隠蔽したいところ by jflute (2025/08/25)
     // いったんまず内部で判定するプログラムにして、UnitTestの都合の解決を最後にって感じで段階踏んでOK。
     // とりあえずゲストからinputされないようにするのはmust
     // この関数の内部で時間を取得して、夜かどうかを判定する
     // UnitTestの場合は、別のテスト関数を用意して、夜の時間固定でテストする
+    //
+    // #1on1: 内部で現在日時を解決するファーストステップはOK。
+    // 一方で、UnitTestで自在に昼/夜のテストをするというのが大変。
+    //
+    // TODO ishihara 修行#: UnitTestの都合の解決、昼でも夜でも自在にいつでもテストできるように by jflute (2025/09/08)
+    // hint: とりあえずstep6をやってからでOKです。
     public void doInPark() {
         if (usedDays >= validDays && alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
@@ -71,6 +77,8 @@ public class Ticket {
         usedDays++;
     }
 
+    // #1on1: これはこれで頑張って考えたのは素晴らしい (2025/09/08)
+    // どうせやるなら、doDoInPark(int currentHour) でロジックは共有した方が良い。
     public void TestDoInPark(){
         if (usedDays >= validDays && alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
@@ -89,7 +97,7 @@ public class Ticket {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
-    // TODO [done] ishihara どうせなら、getterもインスタンス変数の順序を合わせてもらえたらと by jflute (2025/08/25)
+    // [done] ishihara どうせなら、getterもインスタンス変数の順序を合わせてもらえたらと by jflute (2025/08/25)
     public int getDisplayPrice() {
         return displayPrice;
     }

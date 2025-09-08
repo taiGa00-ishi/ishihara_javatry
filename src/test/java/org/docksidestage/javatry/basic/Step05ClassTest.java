@@ -225,13 +225,19 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
-        // TODO [done] ishihara 修行++: nightOnlyのTwoDayが混じってしまう by jflute (2025/08/25)
+        // [done] ishihara 修行++: nightOnlyのTwoDayが混じってしまう by jflute (2025/08/25)
         // "正確に" がポイント。今後、チケットの種別が色々な方向性で増えても判定ロジックが変わらないようにしたい
         // 同じdaysでも価格帯だけは全部異なるので、getTwoDayPriceを追加して、価格で判定した
         // もし同じ価格帯が出てきたらどうするか
         // enumでTypeを作って、Ticketに持たせるのが良いかも
         // 最初はこれで記述
         // if (ticket.getDisplayPrice() == booth.getTwoDayPrice())
+
+        // #1on1: Javaの == と equals() の違いについて
+        //  e.g. if (new Integer(999) == new Integer(999)) {
+        //
+        // new TicketType(TwoDay)     (定数としてnewされたTWO_DAY)
+        // → enumは勝手にnewできないので、== でも大丈夫
         if (ticket.getTicketType() == TicketType.TWO_DAY) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -315,6 +321,7 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
+    // TODO ishihara 修行++: TicketクラスのJavaDocを書いてみてください by jflute (2025/09/08)
     // #1on1: Ticketクラスは多くの人が利用するクラスと想定して (2025/08/25)
     // 質問: 現場であんまりコメント見かけないけど、どういうルールなんだろう？
     // 回答: 恐らくルール自体がないだろう。コメントは義務にならないものなので。

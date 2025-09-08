@@ -52,7 +52,7 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
-    // TODO [done] ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
+    // [done] ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -61,11 +61,15 @@ public class TicketBooth {
      * @return Ticket 返り値としてはTicketを返す
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
-        // TODO [done] ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)
+        // [done] ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)
         // 一方で、ほんのわずかな無駄処理は許容して、Result受け取ってgetTicket()でもいいし...
         // #1on1: その程度の問題のお話をさせて頂きました。(2025/08/25)
         //TicketBuyResult xxx = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false);
         //return xxx.getTicket();
+        // TODO ishihara 現状だと、doBuyTicket()がTicketを戻してるので、resultを用意する必要はない by jflute (2025/09/08)
+        // doBuyTicket() の戻り値を Result にしてしまって...
+        // お釣りの計算や、Resultの構築もprivateメソッドに入れて再利用してしまって...
+        // ただ、OneDayではResultを受け取ってTicketだけ戻す、という方が良いかなと。
         Ticket ticket = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false, TicketType.ONE_DAY);
         int change = handedMoney - ONE_DAY_PRICE;
 
@@ -90,7 +94,7 @@ public class TicketBooth {
         int change = handedMoney - FOUR_DAY_PRICE;
         return new TicketBuyResult(ticket, change);
     }
-
+    
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
         Ticket ticket = doBuyTicket(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true, TicketType.NIGHT_ONLY_TWO_DAY);
         int change = handedMoney - NIGHT_ONLY_TWO_DAY_PRICE;
@@ -98,7 +102,7 @@ public class TicketBooth {
     }
 
 
-    // TODO done ishihara publicメソッドと実処理のprivateメソッドで先頭文字が同じだと補完時に区別つきづらい by jflute (2025/08/25)
+    // done ishihara publicメソッドと実処理のprivateメソッドで先頭文字が同じだと補完時に区別つきづらい by jflute (2025/08/25)
     // e.g. doBuyTicket(), internalBuyTicket()
     // IntelliJでrename機能があるのでそれで直してみましょう。
     // rename後にoption + enter(return)で一括修正した
