@@ -47,7 +47,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      * (OneDayPassportを買って InPark する処理の中で、(simulationを除いて)間違いがいくつかあるので修正しましょう)
      */
     public void test_objectOriented_aboutObject_againstObject() {
-        // TODO ishihara あと3箇所あります (このテスト実行して動作を確認してもOK) by jflute (2025/09/08)
+        // TODO[done] ishihara あと3箇所あります (このテスト実行して動作を確認してもOK) by jflute (2025/09/08)
         //
         // [ticket booth info]
         //
@@ -77,7 +77,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // [ticket info]
         //
         // simulation: actually these variables should be more wide scope
-        int displayPrice = quantity;
+        // displayPriceはquantityではなくoneDayPrice
+        //int displayPrice = quantity;
+        int displayPrice = oneDayPrice;
         boolean alreadyIn = false;
 
         // other processes here...
@@ -97,15 +99,17 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [final process]
         //
-        saveBuyingHistory(quantity, displayPrice, salesProceeds, alreadyIn);
+        // 渡す引数の順番が間違っていた(salseProceedsとdisplayPrice)
+        saveBuyingHistory(quantity, salesProceeds, displayPrice, alreadyIn);
     }
 
     private void saveBuyingHistory(int quantity, Integer salesProceeds, int displayPrice, boolean alreadyIn) {
         if (alreadyIn) {
             // simulation: only logging here (normally e.g. DB insert)
-            showTicketBooth(displayPrice, salesProceeds);
-            showYourTicket(quantity, alreadyIn);
+            showTicketBooth(quantity, salesProceeds);
+            showYourTicket(displayPrice, alreadyIn);
             // saveなのにshowだけなのは何でやと思ったら、普通はDB insertすると但し書きがあった
+            // 引数が逆になっていた(quantity <-> displayPrice)ので修正
         }
     }
 
@@ -115,6 +119,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
 
     private void showYourTicket(int displayPrice, boolean alreadyIn) {
         log("Ticket: displayPrice={}, alreadyIn={}", displayPrice, alreadyIn);
+        // 少し小言を言うと、Your Ticketのステータスとして値段よりもoneDayなのかどうかの方が重要な気がする
     }
 
     // -----------------------------------------------------
@@ -195,9 +200,15 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     }
 
     // write your memo here:
+    // 一個一個変数や関数の動きを見なくても、関数やインスタンスを使うだけで直感的にコードを追える、読みやすい。
+    // それぞれのインスタンスが持っている変数や役割があり、ロジカルに役割の区分ができている。
+    // 変数や関数のスコープが狭くなり、バグが起きにくい。
+    // やっぱりdoShowYourTicket()がalreadyInを示すのはわかるが、displayPriceを示すのは違和感がある。(チケット種別を置換するか、付け足すのが良いきがする)
+    // しかし買った経歴を保存するなら、displayPriceは必要な情報ではある気がする。お客さんに見せるためのdoShowYourTicket出ないのなら必要な気がする
     // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
     // what is object?
-    //
+    // オブジェクトはそれぞれがプロパティや振る舞いを持っていて、責務が明確である。
+    // それらのオブジェクトを組み合わせてシステムを構築することで、コードの可読性や保守性が向上する。
     // _/_/_/_/_/_/_/_/_/_/
 
     // ===================================================================================
@@ -211,30 +222,41 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         Dog dog = new Dog();
         BarkedSound sound = dog.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => wan
         int land = dog.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => null
     }
+    // DogクラスにはgetBarkメソッドがありwanを返す
+    // その帰ってきた値をsoundに代入し、getBarkWord()メソッドを呼び出しているので、wanが返ってくる
+    // Dogクラス自体にはgetHitPoint()メソッドがなかったので何も帰ってこないと思っていた。
+    // Dogクラスの宣言のところにextends Animalとあり、AnimalクラスにgetHitPoint()メソッドがあるので
+    // そのメソッドが呼び出され、AnimalクラスのhitPoint変数が返ってくる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_2nd_asAbstract() {
         Animal animal = new Dog();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => wan
         int land = animal.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => 7
     }
+    // Animal型のanimal変数にDogクラスのインスタンスを代入している
+    // そのため、bark()メソッドを呼び出すとDogクラスのbark()メソッドが呼び出され、wanが返ってくる
+    // getHitPoint()メソッドもAnimalクラスのメソッドが呼び出され、AnimalクラスのhitPoint変数が返ってくる
+    // BarkedSoundの型でsound変数にanimal.bark()で代入をした時にanimal内のbarkメソッドでは3回downHitPoint()が呼ばれている
+    // そのため、AnimalクラスのコンストラクタでhitPointが10に初期化されているので、10-3で7が返ってくる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_3rd_fromMethod() {
         Animal animal = createAnyAnimal();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => wan
         int land = animal.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => 7
     }
+    // createAnyAnimalで生成しているインスタンスはDogクラスのインスタンスなので先ほどと同じ結果になる
 
     private Animal createAnyAnimal() {
         return new Dog();
@@ -249,31 +271,38 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     private void doAnimalSeaLand_for_4th(Animal animal) {
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => wan
         int land = animal.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => 7
     }
+    // doAnimalSeaLand_4thメソッドの中では先ほどまでと同じことをしている。そこにdogのインスタンスが渡されているので結果は同じものになる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_5th_overrideWithSuper() {
         Animal animal = new Cat();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => nya-
         int land = animal.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => 5
     }
+    // 今回はAnimal型のcatのインスタンスを生成している
+    // downHitPointのメソッドはcatのクラスでoverrideされている
+    // cat内のdownHitPointメソッドでは、hitPointを1減らし、hitPointが偶数の時にさらに1減らす処理がされている
+    // bark()メソッド内でdownHitPoint()が3回呼ばれて、9->7->5となる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_6th_overriddenWithoutSuper() {
         Animal animal = new Zombie();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => vooo
         int land = animal.getHitPoint();
-        log(land); // your answer? => 
+        log(land); // your answer? => -1
     }
 
+    // Zombieクラスではhitpointが-1で初期化されている
+    // オーバーライドされているdownHitPoint()では何も処理されていないので、hitPointは変化しない
     /**
      * What is happy if you can assign Dog or Cat instance to Animal variable? <br>
      * (Animal型の変数に、DogやCatなどのインスタンスを代入できると何が嬉しいのでしょう？)
@@ -282,7 +311,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // write your memo here:
         // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // what is happy?
-        //
+        // 共通のインターフェースを持つことで、異なるクラスのオブジェクトを同じ方法で扱うことができる。
+        // それぞれのクラスに特有の仕様を柔軟的に記述することができる。共通のAnimal型の変数を使うコードを記述できる。
+        // 共通のAnimal型のクラスにある関数を使用することができる。
         // _/_/_/_/_/_/_/_/_/_/
     }
 
@@ -293,36 +324,49 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     public void test_objectOriented_polymorphism_interface_dispatch() {
         Loudable loudable = new Zombie();
         String sea = loudable.soundLoudly();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => vooo
         String land = ((Zombie) loudable).bark().getBarkWord();
-        log(land); // your answer? => 
+        log(land); // your answer? => vooo
     }
+    // Loudable型のloudable変数にZombieクラスのインスタンスを代入している
+    // LoudableはインターフェースでsoundLoudly()メソッドを持っている
+    // このインターフェースはAnimalクラスにimplementされている
+    // そのため、loudable.soundLoudly()メソッドを呼び出すとAnimalクラスのsoundLoudly()メソッドが呼び出される
+    // そのメソッドではbarkメソッドとgetBarkWord()メソッドがチェーンされているので、voooをゲットして返している
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_interface_hierarchy() {
         Loudable loudable = new AlarmClock();
         String sea = loudable.soundLoudly();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => jiri jiri jiri---
         boolean land = loudable instanceof Animal;
-        log(land); // your answer? => 
+        log(land); // your answer? => false
     }
+
+    // 今回のLoudableのインターフェースを使っているのはAlarmClockクラスのインスタンス生成する時
+    // AlarmClockクラスはAnimalクラスを継承していないので、loudable instanceof Animalはfalseになる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_interface_partImpl() {
         Animal seaAnimal = new Cat();
         Animal landAnimal = new Zombie();
         boolean sea = seaAnimal instanceof FastRunner;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => true
         boolean land = landAnimal instanceof FastRunner;
-        log(land); // your answer? => 
+        log(land); // your answer? => false
     }
 
+    // CatクラスはFastRunnerインターフェースを実装しているのでtrue
+    // ZombieクラスはFastRunnerインターフェースを実装していないのでfalse
+    // そもそもZombieはあまり速く走るイメージがない
     /**
      * Make Dog class implement FastRunner interface. (the method implementation is same as Cat class) <br>
      * (DogもFastRunnerインターフェースをimplementsしてみましょう (メソッドの実装はCatと同じで))
      */
     public void test_objectOriented_polymorphism_interface_runnerImpl() {
         // your confirmation code here
+        FastRunner runner = new Dog();
+        runner.run();
     }
 
     /**
@@ -333,7 +377,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // write your memo here:
         // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // what is difference?
-        //
+        // 抽象クラスは「is-a」の関係で振る舞いだけでなく状態も共有できる
+        // インターフェースは「can-do」の関係で、振る舞いの定義をしている。
+        // 抽象クラスは単一継承であるが、インターフェースは多重継承が可能である。
         // _/_/_/_/_/_/_/_/_/_/
     }
 

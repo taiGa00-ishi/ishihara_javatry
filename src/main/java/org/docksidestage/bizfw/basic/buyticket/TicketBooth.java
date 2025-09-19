@@ -16,6 +16,8 @@
 package org.docksidestage.bizfw.basic.buyticket;
 
 /**
+ * チケット売り場の情報を管理しています
+ * <p>ここではチケットのそれぞれの値段、チケットの残り枚数、チケットの購入プロセスを管理しています。</p>
  * @author jflute
  */
 public class TicketBooth {
@@ -23,10 +25,15 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
+    /** 最大のチェケット枚数です */
     private static final int MAX_QUANTITY = 10;
+    /** onedayチケットの値段です */
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    /** twodayチケットの値段です */
     private static final int TWO_DAY_PRICE = 13200;
+    /** fourdayチケットの値段です */
     private static final int FOUR_DAY_PRICE = 22400;
+    /** nightonly twodayチケットの値段です */
     private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
@@ -66,21 +73,16 @@ public class TicketBooth {
         // #1on1: その程度の問題のお話をさせて頂きました。(2025/08/25)
         //TicketBuyResult xxx = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false);
         //return xxx.getTicket();
-        // TODO ishihara 現状だと、doBuyTicket()がTicketを戻してるので、resultを用意する必要はない by jflute (2025/09/08)
+        // TODO [done] ishihara 現状だと、doBuyTicket()がTicketを戻してるので、resultを用意する必要はない by jflute (2025/09/08)
         // doBuyTicket() の戻り値を Result にしてしまって...
         // お釣りの計算や、Resultの構築もprivateメソッドに入れて再利用してしまって...
         // ただ、OneDayではResultを受け取ってTicketだけ戻す、という方が良いかなと。
-        Ticket ticket = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false, TicketType.ONE_DAY);
-        int change = handedMoney - ONE_DAY_PRICE;
-
-        return new TicketBuyResult(ticket, change).getTicket();
+        TicketBuyResult result = doBuyTicket(handedMoney, ONE_DAY_PRICE, 1, false, TicketType.ONE_DAY);
+        return result.getTicket();
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        Ticket ticket = doBuyTicket(handedMoney, TWO_DAY_PRICE, 2, false, TicketType.TWO_DAY);
-        int change = handedMoney - TWO_DAY_PRICE;
-
-        return new TicketBuyResult(ticket, change);
+        return doBuyTicket(handedMoney, TWO_DAY_PRICE, 2, false, TicketType.TWO_DAY);
     }
     // #1on1: 時間を置いた自己レビューをするといい (2025/08/14)
     // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
@@ -90,15 +92,11 @@ public class TicketBooth {
     // この目線は業務でとても大事 by いしはらさん
 
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        Ticket ticket = doBuyTicket(handedMoney, FOUR_DAY_PRICE, 4, false, TicketType.FOUR_DAY);
-        int change = handedMoney - FOUR_DAY_PRICE;
-        return new TicketBuyResult(ticket, change);
+        return doBuyTicket(handedMoney, FOUR_DAY_PRICE, 4, false, TicketType.FOUR_DAY);
     }
     
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
-        Ticket ticket = doBuyTicket(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true, TicketType.NIGHT_ONLY_TWO_DAY);
-        int change = handedMoney - NIGHT_ONLY_TWO_DAY_PRICE;
-        return new TicketBuyResult(ticket, change);
+        return doBuyTicket(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true, TicketType.NIGHT_ONLY_TWO_DAY);
     }
 
 
@@ -106,7 +104,7 @@ public class TicketBooth {
     // e.g. doBuyTicket(), internalBuyTicket()
     // IntelliJでrename機能があるのでそれで直してみましょう。
     // rename後にoption + enter(return)で一括修正した
-    private Ticket doBuyTicket(int handedMoney, int ticketPrice, int validDays, boolean nightOnly, TicketType ticketType) {
+    private TicketBuyResult doBuyTicket(int handedMoney, int ticketPrice, int validDays, boolean nightOnly, TicketType ticketType) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -119,7 +117,9 @@ public class TicketBooth {
         } else {
             salesProceeds = ticketPrice;
         }
-        return new Ticket(ticketPrice, validDays, nightOnly, ticketType);
+        Ticket ticket = new Ticket(ticketPrice, validDays, nightOnly, ticketType);
+        int change = handedMoney - ticketPrice;
+        return new TicketBuyResult(ticket, change);
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -144,14 +144,17 @@ public class TicketBooth {
     //                                                                            Accessor
     //                                                                            ========
 
+    /** TwoDayPassportの値段を返します。 */
     public int getTwoDayPrice() {
         return TWO_DAY_PRICE;
     }
 
+    /** チケットの残り枚数を返します。 */
     public int getQuantity() {
         return quantity;
     }
-    
+
+    /** 売上金額を返します。 */
     public Integer getSalesProceeds() {
         return salesProceeds;
     }

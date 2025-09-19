@@ -18,7 +18,13 @@ package org.docksidestage.bizfw.basic.buyticket;
 import java.time.LocalDateTime;
 
 /**
+ * チケットの状態と振る舞いを管理するクラスです。
+ * <p>
+ * このクラスは、個々のチケットの種別、有効性、および利用状況を保持します。
+ * 入園処理などの振る舞いを扱い、チケットのプロパティへのアクセスを提供します。
+ * </p>
  * @author jflute
+ * @author taiGa00-ishi
  */
 public class Ticket {
 
@@ -27,16 +33,29 @@ public class Ticket {
     //                                                                           =========
     // TODO ishihara [いいね] 定義位置がわかりやすい。contructorの引数の順序と同じで... by jflute (2025/08/25)
     // 固定値と動的に変わる値で区別されているのでGood。
+    /** チケットの表示価格です。 */
     private final int displayPrice;
+    /** チケットの有効日数です。 */
     private final int validDays;
+    /** 夜間限定のチケットであるかどうかを示します。 */
     private final boolean nightOnly;
+    /** チケットの具体的な種類です。 */
     private final TicketType ticketType;
+    /** チケットが使用された日数です。 */
     private int usedDays;
+    /** 当日すでに入園済みであるかどうかを示します。 */
     private boolean alreadyIn;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
+    /**
+     * 新しいチケットインスタンスを構築します。
+     * @param displayPrice チケットの表示価格。
+     * @param validDays チケットの有効日数。
+     * @param nightOnly 夜間限定のチケットであるか。
+     * @param ticketType チケットの具体的な種類。
+     */
     public Ticket(int displayPrice, int validDays, boolean nightOnly, TicketType ticketType) {
         this.displayPrice = displayPrice;
         this.validDays = validDays;
@@ -98,26 +117,32 @@ public class Ticket {
     //                                                                            Accessor
     //                                                                            ========
     // [done] ishihara どうせなら、getterもインスタンス変数の順序を合わせてもらえたらと by jflute (2025/08/25)
+    /** チケットの表示価格を返します */
     public int getDisplayPrice() {
         return displayPrice;
     }
 
+    /** チケットの有効日数を返します */
     public int getValidDays() {
         return validDays;
     }
 
+    /** 夜間限定のチケットであるかを返します */
     public boolean isNightOnly() {
         return nightOnly;
     }
 
+    /** Enumのタイプをもとにチケットの具体的な種類を返します */
     public TicketType getTicketType() {
         return ticketType;
     }
 
+    /** チケットが使用された日数を返します */
     public int getUsedDays() {
         return usedDays;
     }
 
+    /** 当日すでに入園済みであるかを返します */
     public boolean isAlreadyIn() {
         return alreadyIn;
     }
