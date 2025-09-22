@@ -60,6 +60,7 @@ public class TicketBooth {
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
     // [done] ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
+    // TODO ishihara @returnの書き方、型は書かなくてOK。説明だけでOK by jflute (2025/09/22)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -73,7 +74,7 @@ public class TicketBooth {
         // #1on1: その程度の問題のお話をさせて頂きました。(2025/08/25)
         //TicketBuyResult xxx = doBuyTicket(handedMoney, ONE_DAY_PRICE ,1, false);
         //return xxx.getTicket();
-        // TODO [done] ishihara 現状だと、doBuyTicket()がTicketを戻してるので、resultを用意する必要はない by jflute (2025/09/08)
+        // [done] ishihara 現状だと、doBuyTicket()がTicketを戻してるので、resultを用意する必要はない by jflute (2025/09/08)
         // doBuyTicket() の戻り値を Result にしてしまって...
         // お釣りの計算や、Resultの構築もprivateメソッドに入れて再利用してしまって...
         // ただ、OneDayではResultを受け取ってTicketだけ戻す、という方が良いかなと。
@@ -82,8 +83,10 @@ public class TicketBooth {
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
+        // TODO ishihara 修行++: TWO(2)が多い、一個のTWOで表現できるようにしたい by jflute (2025/09/22)
         return doBuyTicket(handedMoney, TWO_DAY_PRICE, 2, false, TicketType.TWO_DAY);
     }
+    
     // #1on1: 時間を置いた自己レビューをするといい (2025/08/14)
     // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
     // (jfluteの一例を紹介)

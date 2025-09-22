@@ -22,6 +22,7 @@ import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.bizfw.basic.buyticket.TicketType;
 import org.docksidestage.unit.PlainTestCase;
 
+// #1on1: IntelliJで、shift+shift => "とぅどぅ" のコマンド実行すると、階層で "とぅどぅ" 一覧でる。
 /**
  * The test of class. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
@@ -321,7 +322,7 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
-    // TODO ishihara 修行++: TicketクラスのJavaDocを書いてみてください by jflute (2025/09/08)
+    // done ishihara 修行++: TicketクラスのJavaDocを書いてみてください by jflute (2025/09/08)
     // #1on1: Ticketクラスは多くの人が利用するクラスと想定して (2025/08/25)
     // 質問: 現場であんまりコメント見かけないけど、どういうルールなんだろう？
     // 回答: 恐らくルール自体がないだろう。コメントは義務にならないものなので。
@@ -334,6 +335,20 @@ public class Step05ClassTest extends PlainTestCase {
      * (Ticketクラスのpublicなクラス/コンストラクター/メソッドに、気の利いたJavaDocコメントを本気で書いてみましょう)
      */
     public void test_class_moreFix_yourSuperJavaDoc() {
+        // your confirmation code here
+    }
+
+    // TODO ishihara 修行#: 在庫分けるスタイルでリファクタリングしてみましょう by jflute (2025/09/22)
+    // ===================================================================================
+    //                                                                         Devil Stage
+    //                                                                         ===========
+    /**
+     * If your specification is to share inventory (quantity) between OneDay/TwoDay/...,
+     * change the specification to separate inventory for each OneDay/TwoDay/.... <br>
+     * (もし、OneDay/TwoDay/...で在庫(quantity)を共有する仕様になってたら、
+     * OneDay/TwoDay/...ごとに在庫を分ける仕様に変えてみましょう)
+     */
+    public void test_class_moreFix_zonedQuantity() {
         // your confirmation code here
     }
 }

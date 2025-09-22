@@ -4,7 +4,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 // チケット種別という概念を個数が限定されたインスタンスで表現している。
 // 結局は、(少なくともJavaでは)ある意味単なるクラス。
 
-// TODO ishihara javadocお願いしますm(_ _)m by jflute (2025/09/08)
+// done ishihara javadocお願いしますm(_ _)m by jflute (2025/09/08)
 /**
  * 利用可能なチケットの種類を表す列挙型です。
  * <p>

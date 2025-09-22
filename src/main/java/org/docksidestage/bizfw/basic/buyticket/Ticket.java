@@ -31,7 +31,7 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    // TODO ishihara [いいね] 定義位置がわかりやすい。contructorの引数の順序と同じで... by jflute (2025/08/25)
+    // done ishihara [いいね] 定義位置がわかりやすい。contructorの引数の順序と同じで... by jflute (2025/08/25)
     // 固定値と動的に変わる値で区別されているのでGood。
     /** チケットの表示価格です。 */
     private final int displayPrice;
@@ -117,7 +117,11 @@ public class Ticket {
     //                                                                            Accessor
     //                                                                            ========
     // [done] ishihara どうせなら、getterもインスタンス変数の順序を合わせてもらえたらと by jflute (2025/08/25)
-    /** チケットの表示価格を返します */
+    // #1on1: @return必須/非必須話、getterで両方書くと冗長感話。説明を省略してもOK話。
+    // (jflute的には、IN/OUTの重要で、結構説明抜きで@paramと@returnだけのjavadocもよく書いている)
+    /**
+     * チケットの表示価格を返します 
+     */
     public int getDisplayPrice() {
         return displayPrice;
     }

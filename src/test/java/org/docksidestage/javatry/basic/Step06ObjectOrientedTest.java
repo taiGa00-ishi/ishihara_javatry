@@ -99,6 +99,18 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [final process]
         //
+        // #1on1: int, int, intって引数は危ないので、メソッド作る側としては極力避ける努力する。
+        // 1: データをできるだけオブジェクトで取り扱う
+        // 2: Value Objectを導入する
+        // 3: 引数の順序を工夫する (ただこれは完璧ではない)
+        // 4: JavaDocしっかり書いて、引数を目立たせる (チリも積もれば策)
+        //
+        // 呼び出す側の意識:
+        // 1: 指差し確認
+        // 2: ここぞの嗅覚
+        // → 集中力のコントロール
+        //
+
         // 渡す引数の順番が間違っていた(salseProceedsとdisplayPrice)
         saveBuyingHistory(quantity, salesProceeds, displayPrice, alreadyIn);
     }
@@ -120,6 +132,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     private void showYourTicket(int displayPrice, boolean alreadyIn) {
         log("Ticket: displayPrice={}, alreadyIn={}", displayPrice, alreadyIn);
         // 少し小言を言うと、Your Ticketのステータスとして値段よりもoneDayなのかどうかの方が重要な気がする
+        // #1on1: いいね
     }
 
     // -----------------------------------------------------
@@ -133,6 +146,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [ticket booth info]
         //
+        // TODO ishihara コメントアウトされているのを戻して(復元)欲しい by jflute (2025/09/22)
         TicketBooth booth = new TicketBooth();
 
         // *booth has these properties:
@@ -210,7 +224,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     // オブジェクトはそれぞれがプロパティや振る舞いを持っていて、責務が明確である。
     // それらのオブジェクトを組み合わせてシステムを構築することで、コードの可読性や保守性が向上する。
     // _/_/_/_/_/_/_/_/_/_/
+    // #1on1: オブジェクトとは？を問う理由の話。
 
+    // TODO jflute 次回1on1ふぉろーここから (2025/09/22)
     // ===================================================================================
     //                                                              Polymorphism Beginning
     //                                                              ======================
