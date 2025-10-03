@@ -112,7 +112,7 @@ public class Step01VariableTest extends PlainTestCase {
         // 一言目に、immutable で書いてあります。それだけ重要な情報ということですね。
         
         // done jflute 1on1にて、immutableの追加の補足話をする予定 (2025/07/10)
-        // (↑このtodoは、ぼくのtodoなので、そのまま残しておいてください。1on1のときに話したらdoneします)
+        // (↑このto_doは、ぼくのto_doなので、そのまま残しておいてください。1on1のときに話したらdoneします)
         // #1on1: JavaDocのお話
         // #1on1: IntelliJでcontrol+Jのお話
         // #1on1: add()のソースコードリーディング

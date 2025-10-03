@@ -232,9 +232,9 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String sea;
-        // TODO ishihara StringBuilderの変数は、sbみたいに付けることが多いです by jflute (2025/07/28)
+        // TODO done ishihara StringBuilderの変数は、sbみたいに付けることが多いです by jflute (2025/07/28)
         // str だと、本当にただの String なのかな？という風に見えちゃう。(これはJavaの世界の感覚なので最初は知らなくて当然)
-        StringBuilder str = new StringBuilder();
+        StringBuilder stb = new StringBuilder();
 //        for (String stage : stageList) {
 //            if (stage.startsWith("br")) {
 //                continue;
@@ -248,18 +248,23 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 return; // continue
             }
-            if (stage.contains("ga")) {
-                 str.append(stage);
+            if (stage.contains("ga") && stb.length() < 1) {
+                 stb.append(stage);
                 return; // break
             }
         });
-        sea = str.toString();
+        if (stb.length() < 1){
+            sea = stageList.get(stageList.size() - 1);
+        }
+        else {
+            sea = stb.toString();
+        }
         log(sea); // should be same as before-fix
     }
     // continueに置き換わるとこもそもそもいらない気がする（次のlistの要素にいくだけ）
     // #1on1: 確かに、もう後続の処理がないので、gaの方のreturnはしなくても大丈夫かも。
     // brの方のreturnは、例えば "brga" というような文字列の場合にskipさせないといけないので必要。
-    // TODO ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
+    // TODO done ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
     // また、hangar の後に bongar という別の文字列が存在したときに、同じ結果になるでしょうか？
     // そういった stageList の内容が変わるケースでも、結果が同じになるようにしてみましょう。
 
@@ -317,7 +322,9 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = new ArrayList<>();
         stageList.add("broadway");
         stageList.add("dockside");
+        stageList.add("brga");
         stageList.add("hangar");
+        stageList.add("bongar");
         stageList.add("magiclamp");
         return stageList;
     }

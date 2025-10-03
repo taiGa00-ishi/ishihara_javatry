@@ -25,6 +25,12 @@ import org.docksidestage.bizfw.basic.objanimal.Zombie;
 import org.docksidestage.bizfw.basic.objanimal.loud.AlarmClock;
 import org.docksidestage.bizfw.basic.objanimal.loud.Loudable;
 import org.docksidestage.bizfw.basic.objanimal.runner.FastRunner;
+import org.docksidestage.bizfw.basic.objanimal.sleeper.Koala;
+import org.docksidestage.bizfw.basic.objanimal.sleeper.LongSleeper;
+import org.docksidestage.javatry.basic.st6.os.Mac;
+import org.docksidestage.javatry.basic.st6.os.OldWindows;
+import org.docksidestage.javatry.basic.st6.os.St6OperationSystem;
+import org.docksidestage.javatry.basic.st6.os.Windows;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -146,7 +152,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [ticket booth info]
         //
-        // TODO ishihara コメントアウトされているのを戻して(復元)欲しい by jflute (2025/09/22)
+        // TODO done ishihara コメントアウトされているのを戻して(復元)欲しい by jflute (2025/09/22)
         TicketBooth booth = new TicketBooth();
 
         // *booth has these properties:
@@ -158,9 +164,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // [buy one-day passport]
         //
         // if step05 has been finished, you can use this code by jflute (2019/06/15)
-        //Ticket ticket = booth.buyOneDayPassport(10000);
-        //booth.buyOneDayPassport(10000); // as temporary, remove if you finished step05
-        //Ticket ticket = new Ticket(7400); // also here
+        Ticket ticket = booth.buyOneDayPassport(10000);
+
 
         // *buyOneDayPassport() has this process:
         //if (quantity <= 0) {
@@ -183,18 +188,18 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [do in park now!!!]
         //
-        //ticket.doInPark();
+        ticket.doInPark();
 
         // *doInPark() has this process:
         //if (alreadyIn) {
-        //    throw new IllegalStateException("Already in park by this ticket: displayPrice=" + displayPrice);
+        //     throw new IllegalStateException("Already in park by this ticket: displayPrice=" + displayPrice);
         //}
         //alreadyIn = true;
 
         //
         // [final process]
         //
-        //saveBuyingHistory(booth, ticket);
+        saveBuyingHistory(booth, ticket);
     }
 
     private void saveBuyingHistory(TicketBooth booth, Ticket ticket) {
@@ -408,6 +413,11 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_polymorphism_makeConcrete() {
         // your confirmation code here
+        Animal aussieAnimal = new Koala();
+        log(aussieAnimal.getHitPoint());
+        log(aussieAnimal.bark());
+        log(aussieAnimal.getHitPoint());
+
     }
 
     /**
@@ -416,6 +426,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_polymorphism_makeInterface() {
         // your confirmation code here
+        LongSleeper aussieAnimal = new Koala();
+        aussieAnimal.sleep();
     }
 
     // ===================================================================================
@@ -435,6 +447,19 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_writing_specialization_extractToConcrete() {
         // your confirmation code here
+        St6OperationSystem mac = new Mac("taiga");
+        String macPath = mac.buildUserResourcePath("Desktop/memo.txt");
+        log(macPath);
+
+        // Windows のコンクリートクラス
+        St6OperationSystem windows = new Windows("TaiGa");
+        String winPath = windows.buildUserResourcePath("Documents/report.docx");
+        log(winPath);
+
+        // Old Windows のコンクリートクラス
+        St6OperationSystem oldWin = new OldWindows("oldTaiga");
+        String oldWinPath = oldWin.buildUserResourcePath("My Documents/photo.jpg");
+        log(oldWinPath);
     }
 
     // ===================================================================================
