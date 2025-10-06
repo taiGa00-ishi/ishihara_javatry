@@ -417,6 +417,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         
         // TODO jflute 次回、特殊なinterfaceの使われ方の補足も e.g. ColorBox (2025/10/06)
         // フレームワークとか、ライブラリでのinterfaceの使われ方なども。
+        // interfaceだと、実装が全然再利用できなくて、まだメリットがピンポイントが来ない by いしはらさん
+        // (再利用の方法の話も)
     }
 
     // ===================================================================================
