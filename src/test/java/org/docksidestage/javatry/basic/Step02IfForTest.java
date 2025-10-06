@@ -232,7 +232,7 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String sea;
-        // TODO done ishihara StringBuilderの変数は、sbみたいに付けることが多いです by jflute (2025/07/28)
+        // done ishihara StringBuilderの変数は、sbみたいに付けることが多いです by jflute (2025/07/28)
         // str だと、本当にただの String なのかな？という風に見えちゃう。(これはJavaの世界の感覚なので最初は知らなくて当然)
         StringBuilder stb = new StringBuilder();
 //        for (String stage : stageList) {
@@ -264,9 +264,11 @@ public class Step02IfForTest extends PlainTestCase {
     // continueに置き換わるとこもそもそもいらない気がする（次のlistの要素にいくだけ）
     // #1on1: 確かに、もう後続の処理がないので、gaの方のreturnはしなくても大丈夫かも。
     // brの方のreturnは、例えば "brga" というような文字列の場合にskipさせないといけないので必要。
-    // TODO done ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
+    // done ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
     // また、hangar の後に bongar という別の文字列が存在したときに、同じ結果になるでしょうか？
     // そういった stageList の内容が変わるケースでも、結果が同じになるようにしてみましょう。
+    // TODO ishihara 修行#: もし、broadwayが最後にあって、かつ、gaが何もない場合も同じ結果になるように by jflute (2025/10/06)
+    // (今だと、broadwayが表示されてしまう)
 
     /**
      * Make your original exercise as question style about if-for statement. <br>

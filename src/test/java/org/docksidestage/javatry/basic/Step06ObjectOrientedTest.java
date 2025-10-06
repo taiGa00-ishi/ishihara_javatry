@@ -53,7 +53,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      * (OneDayPassportを買って InPark する処理の中で、(simulationを除いて)間違いがいくつかあるので修正しましょう)
      */
     public void test_objectOriented_aboutObject_againstObject() {
-        // TODO[done] ishihara あと3箇所あります (このテスト実行して動作を確認してもOK) by jflute (2025/09/08)
+        // [done] ishihara あと3箇所あります (このテスト実行して動作を確認してもOK) by jflute (2025/09/08)
         //
         // [ticket booth info]
         //
@@ -152,7 +152,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [ticket booth info]
         //
-        // TODO done ishihara コメントアウトされているのを戻して(復元)欲しい by jflute (2025/09/22)
+        // done ishihara コメントアウトされているのを戻して(復元)欲しい by jflute (2025/09/22)
         TicketBooth booth = new TicketBooth();
 
         // *booth has these properties:
@@ -231,10 +231,11 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     // _/_/_/_/_/_/_/_/_/_/
     // #1on1: オブジェクトとは？を問う理由の話。
 
-    // TODO jflute 次回1on1ふぉろーここから (2025/09/22)
+    // done jflute 次回1on1ふぉろーここから (2025/09/22)
     // ===================================================================================
     //                                                              Polymorphism Beginning
     //                                                              ======================
+    // #1on1: 多態性、多相性
     /**
      * What string is sea and land variable at the method end? <br>
      * (メソッド終了時の変数 sea, land の中身は？)
@@ -255,6 +256,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_2nd_asAbstract() {
+        // #1on1: いぬはどうぶつである: is-aの関係
+        // いぬは目覚まし時計である => まあ基本的には変 (比喩表現かな？)
+        // どうぶつはいぬである => とは言い切れない
         Animal animal = new Dog();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
@@ -270,6 +274,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_objectOriented_polymorphism_3rd_fromMethod() {
+        // #1on1: test_メソッドの、Dogへの直接依存がなくなった
+        // DogがCatに変わっても、test_メソッドは1文字も修正しなくていい
         Animal animal = createAnyAnimal();
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
@@ -289,6 +295,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         doAnimalSeaLand_for_4th(dog);
     }
 
+    // #1on1: doAnimal...()もDog/Catへの依存なく、Animalだったら何でも受け付ける
     private void doAnimalSeaLand_for_4th(Animal animal) {
         BarkedSound sound = animal.bark();
         String sea = sound.getBarkWord();
@@ -336,6 +343,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // それぞれのクラスに特有の仕様を柔軟的に記述することができる。共通のAnimal型の変数を使うコードを記述できる。
         // 共通のAnimal型のクラスにある関数を使用することができる。
         // _/_/_/_/_/_/_/_/_/_/
+        // #1on1: 日常でのポリモーフィズム話 (2025/10/06)
     }
 
     // ===================================================================================
@@ -400,8 +408,15 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // what is difference?
         // 抽象クラスは「is-a」の関係で振る舞いだけでなく状態も共有できる
         // インターフェースは「can-do」の関係で、振る舞いの定義をしている。
-        // 抽象クラスは単一継承であるが、インターフェースは多重継承が可能である。
+        // 抽象クラスは単一継承であるが、インターフェースは多重継承が可能である。 // Javaの文法的な話
         // _/_/_/_/_/_/_/_/_/_/
+        // #1on1: "状態も共有できる"、"振る舞いの定義" あたり重要なポイント。
+        // Javaは多重継承できない。できなくした。(C++, Rubyは多重継承ができる)
+        // 代わりに interface。
+        // 名前の付け方も、オブジェクト中心なのか？操作中心なのか？ (コンセプトが違うから)
+        
+        // TODO jflute 次回、特殊なinterfaceの使われ方の補足も e.g. ColorBox (2025/10/06)
+        // フレームワークとか、ライブラリでのinterfaceの使われ方なども。
     }
 
     // ===================================================================================
@@ -439,6 +454,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_writing_generalization_extractToAbstract() {
         // your confirmation code here
+        // TODO ishihara 飛んでる by jflute (2025/10/06)
     }
 
     /**
