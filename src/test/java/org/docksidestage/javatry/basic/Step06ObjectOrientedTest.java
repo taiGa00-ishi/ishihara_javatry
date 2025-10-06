@@ -478,6 +478,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         St6OperationSystem oldWin = new OldWindows("oldTaiga");
         String oldWinPath = oldWin.buildUserResourcePath("My Documents/photo.jpg");
         log(oldWinPath);
+        
+        // TODO jflute MacとWindowsの再利用思考トレーニング (2025/10/06)
+        // TODO jflute WindowsとWindowsの再利用思考トレーニング (2025/10/06)
     }
 
     // ===================================================================================

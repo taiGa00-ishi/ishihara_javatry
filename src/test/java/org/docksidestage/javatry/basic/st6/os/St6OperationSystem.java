@@ -23,6 +23,7 @@ public abstract class St6OperationSystem {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
+    // TODO ishihara すでに移行されてunusedの警告が出ているので削除でいいのかなと by jflute (2025/10/06)
     private static final String OS_TYPE_MAC = "Mac";
     private static final String OS_TYPE_WINDOWS = "Windows";
     private static final String OS_TYPE_OLD_WINDOWS = "OldWindows";
