@@ -1,5 +1,12 @@
 package org.docksidestage.javatry.basic.st6.os;
 
+/**
+ * Windowsを表すクラスです。
+ * <p>
+ * このクラスは、OSクラスを継承し、独自のファイルセパレーターとディレクトリ構造を持っています。
+ * </p>
+ * @author taiGa00-ishi
+ */
 public class Windows extends St6OperationSystem {
     public Windows(String loginId) {
         super("Windows", loginId);
