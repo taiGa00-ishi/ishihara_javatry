@@ -4,13 +4,13 @@ import org.docksidestage.bizfw.basic.objanimal.Animal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
  * Barking processを管理しているクラス.
  * <p>
  * このクラスでは動物の吠えるプロセスについてのメソッドを管理している。
  * </p>
  * @author taiGa00-ishi
- */
+ **/
 
 public class BarkingProcess {
 
