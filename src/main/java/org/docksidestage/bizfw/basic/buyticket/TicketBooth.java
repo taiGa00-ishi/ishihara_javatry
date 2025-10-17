@@ -60,13 +60,13 @@ public class TicketBooth {
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
     // [done] ishihara javadoc, returnも付けましょう。(書くからにはin/outはしっかり) by jflute (2025/08/25)
-    // TODO ishihara @returnの書き方、型は書かなくてOK。説明だけでOK by jflute (2025/09/22)
+    // TODO done ishihara @returnの書き方、型は書かなくてOK。説明だけでOK by jflute (2025/09/22)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
-     * @return Ticket 返り値としてはTicketを返す
+     * @return 返り値としてはTicketを返す
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
         // [done] ishihara OneDayの戻り値を変更してResult統一にしちゃってもいいし... by jflute (2025/08/25)

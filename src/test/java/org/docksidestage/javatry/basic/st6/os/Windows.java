@@ -12,9 +12,10 @@ public class Windows extends St6OperationSystem {
 
     @Override
     protected String getUserDirectory() {
-        // TODO ishihara super.は不要です。(というか本来は this. を使うところでそれも省略) by jflute (2025/10/06)
-        // TODO ishihara Cドライブかどうか？の表現がOldWindowsの方と不統一なので合わせましょう by jflute (2025/10/06)
+        // TODO done ishihara super.は不要です。(というか本来は this. を使うところでそれも省略) by jflute (2025/10/06)
+        // コンストラクタでloginIdで受け取っていましたね
+        // TODO done ishihara Cドライブかどうか？の表現がOldWindowsの方と不統一なので合わせましょう by jflute (2025/10/06)
         // (まあ、ここではCドライブは気にしない実装にしちゃってOK)
-        return "C:\\Users\\" + super.loginId;
+        return "/Users/" + loginId;
     }
 }

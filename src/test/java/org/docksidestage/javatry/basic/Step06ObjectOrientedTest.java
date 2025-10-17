@@ -18,7 +18,7 @@ package org.docksidestage.javatry.basic;
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.objanimal.Animal;
-import org.docksidestage.bizfw.basic.objanimal.BarkedSound;
+import org.docksidestage.bizfw.basic.objanimal.barking.BarkedSound;
 import org.docksidestage.bizfw.basic.objanimal.Cat;
 import org.docksidestage.bizfw.basic.objanimal.Dog;
 import org.docksidestage.bizfw.basic.objanimal.Zombie;
@@ -27,6 +27,9 @@ import org.docksidestage.bizfw.basic.objanimal.loud.Loudable;
 import org.docksidestage.bizfw.basic.objanimal.runner.FastRunner;
 import org.docksidestage.bizfw.basic.objanimal.sleeper.Koala;
 import org.docksidestage.bizfw.basic.objanimal.sleeper.LongSleeper;
+import org.docksidestage.javatry.basic.st6.dbms.Database;
+import org.docksidestage.javatry.basic.st6.dbms.St6MySql;
+import org.docksidestage.javatry.basic.st6.dbms.St6PostgreSql;
 import org.docksidestage.javatry.basic.st6.os.Mac;
 import org.docksidestage.javatry.basic.st6.os.OldWindows;
 import org.docksidestage.javatry.basic.st6.os.St6OperationSystem;
@@ -456,7 +459,13 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_writing_generalization_extractToAbstract() {
         // your confirmation code here
-        // TODO ishihara 飛んでる by jflute (2025/10/06)
+        Database mysql = new St6MySql();
+        Database postgre = new St6PostgreSql();
+        String mysqlQuery = mysql.buildPagingQuery(10, 3);
+        String postgreQuery = postgre.buildPagingQuery(10, 3);
+        log(mysqlQuery);
+        log(postgreQuery);
+        // TODO done ishihara 飛んでる by jflute (2025/10/06)
     }
 
     /**
@@ -492,6 +501,12 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_writing_withDelegation() {
         // your confirmation code here
+        Animal test1 = new Dog();
+        Animal test2 = new Cat();
+        Animal test3 = new Koala();
+        log(test1.bark());
+        log(test2.bark());
+        log(test3.bark());
     }
 
     /**
@@ -513,6 +528,12 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_writing_withPackageRefactoring() {
         // your confirmation code here
+        Animal test1 = new Dog();
+        Animal test2 = new Cat();
+        Animal test3 = new Koala();
+        log(test1.bark());
+        log(test2.bark());
+        log(test3.bark());
     }
 
     /**
@@ -523,7 +544,10 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // write your memo here:
         // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // is it corrent?
-        //
+        // 不適切
+        // ゾンビだけdownHitPoint()メソッドで何もしないことをしている。
+        // 抽象クラスに備わっている共通メソッドに対して何もしないということはゾンビに対して不必要
+        // ゾンビは動物とは異なる概念であり、別のクラス階層で扱うべき
         // _/_/_/_/_/_/_/_/_/_/
     }
 }

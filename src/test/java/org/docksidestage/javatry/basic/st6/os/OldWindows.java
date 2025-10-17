@@ -12,6 +12,6 @@ public class OldWindows extends St6OperationSystem {
 
     @Override
     protected String getUserDirectory() {
-        return "/Documents and Settings/" + super.loginId; // Old Windows固有の実装
+        return "/Documents and Settings/" + loginId; // Old Windows固有の実装
     }
 }

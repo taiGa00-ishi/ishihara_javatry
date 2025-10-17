@@ -12,6 +12,6 @@ public class Mac extends  St6OperationSystem {
 
     @Override
     protected String getUserDirectory() {
-        return "/Users/" + super.loginId;
+        return "/Users/" + loginId;
     }
 }

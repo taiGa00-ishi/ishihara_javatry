@@ -17,16 +17,14 @@ package org.docksidestage.javatry.basic.st6.os;
 
 /**
  * @author jflute
+ * @author taiGa00-ishi
  */
 public abstract class St6OperationSystem {
 
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
-    // TODO ishihara すでに移行されてunusedの警告が出ているので削除でいいのかなと by jflute (2025/10/06)
-    private static final String OS_TYPE_MAC = "Mac";
-    private static final String OS_TYPE_WINDOWS = "Windows";
-    private static final String OS_TYPE_OLD_WINDOWS = "OldWindows";
+    // TODO done ishihara すでに移行されてunusedの警告が出ているので削除でいいのかなと by jflute (2025/10/06)
 
     // ===================================================================================
     //                                                                           Attribute
