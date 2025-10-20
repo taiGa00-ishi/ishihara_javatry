@@ -56,6 +56,8 @@ public abstract class Animal implements Loudable {
     // ===================================================================================
     //                                                                           Hit Point
     //                                                                           =========
+    // #1on1: protectedは、サブクラスに見せる、もしくは、同じパッケージに見せる
+    // TODO ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
     public void downHitPoint() {
         --hitPoint;
         if (hitPoint <= 0) {

@@ -248,8 +248,10 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 return; // continue
             }
-            if (stage.contains("ga") && stb.length() < 1) {
-                 stb.append(stage);
+             stb.setLength(0);
+             stb.append(stage);
+
+            if (stage.contains("ga")) {
                 return; // break
             }
         });
@@ -273,8 +275,40 @@ public class Step02IfForTest extends PlainTestCase {
     // done ishihara 修行++: もし、"hangar" が stageList の中に存在しない場合、結果が同じになるでしょうか？ by jflute (2025/07/28)
     // また、hangar の後に bongar という別の文字列が存在したときに、同じ結果になるでしょうか？
     // そういった stageList の内容が変わるケースでも、結果が同じになるようにしてみましょう。
-    // TODO done ishihara 修行#: もし、broadwayが最後にあって、かつ、gaが何もない場合も同じ結果になるように by jflute (2025/10/06)
+    // done ishihara 修行#: もし、broadwayが最後にあって、かつ、gaが何もない場合も同じ結果になるように by jflute (2025/10/06)
     // (今だと、broadwayが表示されてしまう)
+    //
+    // #1on1:
+    // sea = stage;
+    //  ↓
+    // stb.setLength(0);
+    // stb.append(stage);
+    /*
+        StringBuilder breakMarkSb = new StringBuilder();
+        stageList.forEach(stage ->{
+            if (breakMarkSb.length() > 0) {
+                return; // 空回しによる実質break
+            }
+            if (stage.startsWith("br")) {
+                return; // continue
+            }
+            stb.setLength(0);
+            stb.append(stage);
+            if (stage.contains("ga")) {
+                breakMarkSb.append("exists");
+            }
+        });
+        stageList.forEach(stage ->{
+            if (stb.indexOf("ga") >= 0) {
+                return; // 空回しによる実質break
+            }
+            if (stage.startsWith("br")) {
+                return; // continue
+            }
+            stb.setLength(0);
+            stb.append(stage);
+        });
+     */
 
     /**
      * Make your original exercise as question style about if-for statement. <br>

@@ -19,7 +19,7 @@ import org.docksidestage.bizfw.basic.objanimal.runner.FastRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO done ishihara 修正入れたら、ぜひauthor追加を (他のクラスも) by jflute (2025/10/06)
+// done ishihara 修正入れたら、ぜひauthor追加を (他のクラスも) by jflute (2025/10/06)
 /**
  * The object for dog(犬).
  * @author jflute
@@ -36,7 +36,7 @@ public class Dog extends Animal implements FastRunner {
     public Dog() {
     }
 
-    // TODO done ishihara メソッド定義位置、Constructor配下は変なので、Runnerのタグコメント作って配置しましょう (他のクラスも) by jflute (2025/10/06)
+    // done ishihara メソッド定義位置、Constructor配下は変なので、Runnerのタグコメント作って配置しましょう (他のクラスも) by jflute (2025/10/06)
     // ===================================================================================
     //                                                                               Bark
     //                                                                              ======

@@ -465,7 +465,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         String postgreQuery = postgre.buildPagingQuery(10, 3);
         log(mysqlQuery);
         log(postgreQuery);
-        // TODO done ishihara 飛んでる by jflute (2025/10/06)
+        // done ishihara 飛んでる by jflute (2025/10/06)
     }
 
     /**
@@ -488,8 +488,14 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         String oldWinPath = oldWin.buildUserResourcePath("My Documents/photo.jpg");
         log(oldWinPath);
         
-        // TODO jflute MacとWindowsの再利用思考トレーニング (2025/10/06)
-        // TODO jflute WindowsとWindowsの再利用思考トレーニング (2025/10/06)
+        // done jflute MacとWindowsの再利用思考トレーニング (2025/10/06)
+        // #1on1: "/Users/" + loginId は再利用する？しない？
+        // 「再利用というのは、コードが同じだから再利用するのではなく、意味が同じだから再利用する」
+        // (けっこうときどきたまたま同じなだけどコードというのもあるので注意)
+        // メソッドに切り出すことを想像して、名前に困るかどうか？が一つの判断基準。
+        // (DB設計のテーブル名でのエピソード by いしはらさん)
+        //
+        // TODO jflute WindowsとOldWindowsの再利用思考トレーニング (2025/10/06)
     }
 
     // ===================================================================================
@@ -549,5 +555,6 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // 抽象クラスに備わっている共通メソッドに対して何もしないということはゾンビに対して不必要
         // ゾンビは動物とは異なる概念であり、別のクラス階層で扱うべき
         // _/_/_/_/_/_/_/_/_/_/
+        // TODO jflute 次回1on1にて (2025/10/20)
     }
 }

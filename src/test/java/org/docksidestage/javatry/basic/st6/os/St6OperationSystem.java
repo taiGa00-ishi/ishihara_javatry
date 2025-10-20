@@ -24,7 +24,7 @@ public abstract class St6OperationSystem {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
-    // TODO done ishihara すでに移行されてunusedの警告が出ているので削除でいいのかなと by jflute (2025/10/06)
+    // done ishihara すでに移行されてunusedの警告が出ているので削除でいいのかなと by jflute (2025/10/06)
 
     // ===================================================================================
     //                                                                           Attribute
@@ -34,6 +34,7 @@ public abstract class St6OperationSystem {
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
+    // TODO ishihara osTypeの残骸あり by jflute (2025/10/20)
     public St6OperationSystem(String osType, String loginId) {
         this.loginId = loginId;
     }

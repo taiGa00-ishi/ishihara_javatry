@@ -4,7 +4,7 @@ import org.docksidestage.bizfw.basic.objanimal.Animal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO done ishihara javadocお願いします by jflute (2025/10/06)
+// done ishihara javadocお願いします by jflute (2025/10/06)
 /**
  * コアラを表すクラスです。
  * <p>
@@ -26,7 +26,7 @@ public class Koala extends Animal implements LongSleeper {
     public String getBarkWord() {
         return "fugo";
     }
-
+    
     // ===================================================================================
     //                                                                           Hit Point
     //                                                                           =========
@@ -43,6 +43,9 @@ public class Koala extends Animal implements LongSleeper {
     @Override
     public void sleep() {
         logger.debug("...Sleeping now");
+        // TODO ishihara super. 両方とも不要です (というか無い方がいい) by jflute (2025/10/20)
+        // 仮に、getInitialHitPoint() をオーバーライドして拡張した場合、
+        // super.getInitialHitPoint() だと、そのオーバーライドメソッドが呼ばれない。
         super.hitPoint = super.getInitialHitPoint();
     }
 

@@ -1,6 +1,6 @@
 package org.docksidestage.bizfw.basic.objanimal.sleeper;
 
-// TODO done ishihara javadocお願いします by jflute (2025/10/06)
+// done ishihara javadocお願いします by jflute (2025/10/06)
 /**
  * 長時間睡眠する動作を表すインターフェースです。
  * <p>
