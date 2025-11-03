@@ -36,17 +36,16 @@ public class Koala extends Animal implements LongSleeper {
         super.downHitPoint();
         super.downHitPoint();
     }
-
     // ===================================================================================
     //                                                                             Sleeper
     //                                                                             =======
     @Override
     public void sleep() {
         logger.debug("...Sleeping now");
-        // TODO ishihara super. 両方とも不要です (というか無い方がいい) by jflute (2025/10/20)
+        // TODO done ishihara super. 両方とも不要です (というか無い方がいい) by jflute (2025/10/20)
         // 仮に、getInitialHitPoint() をオーバーライドして拡張した場合、
         // super.getInitialHitPoint() だと、そのオーバーライドメソッドが呼ばれない。
-        super.hitPoint = super.getInitialHitPoint();
+        hitPoint = getInitialHitPoint();
     }
 
 }

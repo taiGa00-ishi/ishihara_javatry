@@ -31,17 +31,18 @@ public class BarkingProcess {
     }
 
     protected void breatheIn() { // actually depends on barking
+        animal.onBreatheIn(); // フックとして呼び出す(Zombieのため)
         logger.debug("...Breathing in for barking"); // dummy implementation
-        animal.downHitPoint();
+        animal.downHitPointHub();
     }
 
     protected void prepareAbdominalMuscle() { // also actually depends on barking
         logger.debug("...Using my abdominal muscle for barking"); // dummy implementation
-        animal.downHitPoint();
+        animal.downHitPointHub();
     }
 
     protected BarkedSound doBark(String barkWord) {
-        animal.downHitPoint();
+        animal.downHitPointHub();
         BarkedSound sound = new BarkedSound(barkWord);
         logger.debug(barkWord);
         return sound;

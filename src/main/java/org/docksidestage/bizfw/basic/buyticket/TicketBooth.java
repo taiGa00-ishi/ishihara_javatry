@@ -25,16 +25,8 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
-    /** 最大のチェケット枚数です */
+    /** 最大のチケット枚数です */
     private static final int MAX_QUANTITY = 10;
-    /** onedayチケットの値段です */
-    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
-    /** twodayチケットの値段です */
-    private static final int TWO_DAY_PRICE = 13200;
-    /** fourdayチケットの値段です */
-    private static final int FOUR_DAY_PRICE = 22400;
-    /** nightonly twodayチケットの値段です */
-    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -78,15 +70,15 @@ public class TicketBooth {
         // doBuyTicket() の戻り値を Result にしてしまって...
         // お釣りの計算や、Resultの構築もprivateメソッドに入れて再利用してしまって...
         // ただ、OneDayではResultを受け取ってTicketだけ戻す、という方が良いかなと。
-        TicketBuyResult result = doBuyTicket(handedMoney, ONE_DAY_PRICE, 1, false, TicketType.ONE_DAY);
+        TicketBuyResult result = doBuyTicket(handedMoney, TicketType.ONE_DAY);
         return result.getTicket();
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        // TODO ishihara 修行++: TWO(2)が多い、一個のTWOで表現できるようにしたい by jflute (2025/09/22)
-        return doBuyTicket(handedMoney, TWO_DAY_PRICE, 2, false, TicketType.TWO_DAY);
+        // TODO done ishihara 修行++: TWO(2)が多い、一個のTWOで表現できるようにしたい by jflute (2025/09/22)
+        return doBuyTicket(handedMoney, TicketType.TWO_DAY);
     }
-    
+
     // #1on1: 時間を置いた自己レビューをするといい (2025/08/14)
     // #1on1: コピペはできるだけ避ける一方で、コピペでも修正漏れを防ぐ手段は自分なり確立しておいたほうがいい (2025/08/14)
     // (jfluteの一例を紹介)
@@ -95,11 +87,11 @@ public class TicketBooth {
     // この目線は業務でとても大事 by いしはらさん
 
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        return doBuyTicket(handedMoney, FOUR_DAY_PRICE, 4, false, TicketType.FOUR_DAY);
+        return doBuyTicket(handedMoney, TicketType.FOUR_DAY);
     }
-    
+
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
-        return doBuyTicket(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, 2, true, TicketType.NIGHT_ONLY_TWO_DAY);
+        return doBuyTicket(handedMoney, TicketType.NIGHT_ONLY_TWO_DAY);
     }
 
 
@@ -107,7 +99,8 @@ public class TicketBooth {
     // e.g. doBuyTicket(), internalBuyTicket()
     // IntelliJでrename機能があるのでそれで直してみましょう。
     // rename後にoption + enter(return)で一括修正した
-    private TicketBuyResult doBuyTicket(int handedMoney, int ticketPrice, int validDays, boolean nightOnly, TicketType ticketType) {
+    private TicketBuyResult doBuyTicket(int handedMoney, TicketType ticketType) {
+        int ticketPrice = ticketType.getPrice();
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -120,7 +113,7 @@ public class TicketBooth {
         } else {
             salesProceeds = ticketPrice;
         }
-        Ticket ticket = new Ticket(ticketPrice, validDays, nightOnly, ticketType);
+        Ticket ticket = new Ticket(ticketPrice, ticketType.getValidDays(), ticketType.isNightOnly(), ticketType);
         int change = handedMoney - ticketPrice;
         return new TicketBuyResult(ticket, change);
     }
@@ -146,11 +139,6 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
-
-    /** TwoDayPassportの値段を返します。 */
-    public int getTwoDayPrice() {
-        return TWO_DAY_PRICE;
-    }
 
     /** チケットの残り枚数を返します。 */
     public int getQuantity() {

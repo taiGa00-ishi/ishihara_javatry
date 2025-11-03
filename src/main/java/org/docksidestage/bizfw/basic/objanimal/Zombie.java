@@ -54,12 +54,11 @@ public class Zombie extends Animal {
     // ===================================================================================
     //                                                                               Bark
     //                                                                              ======
-    // TODO ishihara 修行++: Zombieの挙動をキープするように by jflute (2025/10/20)
-//    @Override
-//    protected void breatheIn() {
-//        super.breatheIn();
-//        zombieDiary.countBreatheIn();
-//    }
+    // TODO done ishihara 修行++: Zombieの挙動をキープするように by jflute (2025/10/20)
+    @Override
+    public void onBreatheIn() {
+        zombieDiary.countBreatheIn();
+    }
 
     @Override
     public String getBarkWord() {

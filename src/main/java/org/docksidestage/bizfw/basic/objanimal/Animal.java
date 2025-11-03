@@ -53,12 +53,20 @@ public abstract class Animal implements Loudable {
 
     public abstract String getBarkWord();
 
+    /**
+     * Hook method called when breathing in for barking.
+     * Subclasses can override this to add custom behavior.
+     */
+    public void onBreatheIn() {
+        // default: do nothing (subclasses can override)
+    }
+
     // ===================================================================================
     //                                                                           Hit Point
     //                                                                           =========
     // #1on1: protectedは、サブクラスに見せる、もしくは、同じパッケージに見せる
-    // TODO ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
-    public void downHitPoint() {
+    // TODO done ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
+    protected void downHitPoint() {
         --hitPoint;
         if (hitPoint <= 0) {
             throw new IllegalStateException("I'm very tired, so I want to sleep" + getBarkWord());
@@ -78,5 +86,10 @@ public abstract class Animal implements Loudable {
     //                                                                            ========
     public int getHitPoint() {
         return hitPoint;
+    }
+
+    // 他のパッケージとの経由地点
+    public void downHitPointHub(){
+        downHitPoint();
     }
 }

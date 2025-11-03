@@ -9,16 +9,58 @@ package org.docksidestage.bizfw.basic.buyticket;
  * 利用可能なチケットの種類を表す列挙型です。
  * <p>
  * この列挙型は、1日券、複数日券、夜間限定券などの特定のチケットオプションを定義します。
+ * 各チケットタイプには価格、有効日数、夜間限定フラグの情報が含まれています。
  * </p>
  * @author taiGa00-ishi
  */
 public enum TicketType {
     /** 1日券です。 */
-    ONE_DAY,
+    ONE_DAY(7400, 1, false),
     /** 2日券です。 */
-    TWO_DAY,
+    TWO_DAY(13200, 2, false),
     /** 4日券です。 */
-    FOUR_DAY,
+    FOUR_DAY(22400, 4, false),
     /** 夜間限定の2日券です。 */
-    NIGHT_ONLY_TWO_DAY
+    NIGHT_ONLY_TWO_DAY(7400, 2, true);
+
+    // ===================================================================================
+    //                                                                           Attribute
+    //                                                                           =========
+    private final int price;
+    private final int validDays;
+    private final boolean nightOnly;
+
+    // ===================================================================================
+    //                                                                         Constructor
+    //                                                                         ===========
+    TicketType(int price, int validDays, boolean nightOnly) {
+        this.price = price;
+        this.validDays = validDays;
+        this.nightOnly = nightOnly;
+    }
+
+    // ===================================================================================
+    //                                                                            Accessor
+    //                                                                            ========
+    /**
+     * チケットの価格を返します。
+     */
+    public int getPrice() {
+        return price;
+    }
+
+    /**
+     * チケットの有効日数を返します。
+     */
+    public int getValidDays() {
+        return validDays;
+    }
+
+    /**
+     * 夜間限定チケットかどうかを返します。
+     * @return 夜間限定チケットの場合true
+     */
+    public boolean isNightOnly() {
+        return nightOnly;
+    }
 }
