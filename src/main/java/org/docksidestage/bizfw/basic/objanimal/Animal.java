@@ -65,7 +65,9 @@ public abstract class Animal implements Loudable {
     //                                                                           Hit Point
     //                                                                           =========
     // #1on1: protectedは、サブクラスに見せる、もしくは、同じパッケージに見せる
-    // TODO done ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
+    // done ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
+    // TODO ishihara 修行#: BarkingProcess以外の人が呼べちゃうので、public Hubも使わずに実現したいところ by jflute (2025/11/04)
+    // (hint: 先のstepに進んで、何かピンと来たときに対応するでOK)
     protected void downHitPoint() {
         --hitPoint;
         if (hitPoint <= 0) {
@@ -89,6 +91,24 @@ public abstract class Animal implements Loudable {
     }
 
     // 他のパッケージとの経由地点
+    // #1on1: DBFluteのCBのembedCondition()の例をよもやま話:
+    //  SQLインジェクション対策:
+    //  where dfloc.MEMBER_NAME like 'sea%' escape '|'
+    //   ↓
+    //  where dfloc.MEMBER_NAME like ? escape '|'
+    //  バインド変数(SQLの変数) → 1個目の?は "sea%" ですよ、って渡す
+    //
+    // 非推奨を使って危ない機能であることを演出する例: cb.embedCondition(...);
+    //
+    // 質問: 埋め込みでそんなに差が出ることがあるのか？ by いしはらさん
+    // 回答: とあるレアケースでは、10秒が1秒みたいなレベルになったことがある by jflute
+    // 仕組み的には...実行計画で10秒掛かる選択肢と、1秒で済む選択肢があって、どっちを選ぶか？
+    // 通常は、速い方を選んでくれるけど、超時々レアケースで、遅い方を選んじゃうことがある。
+    // そして、実際の値が明示されていることで、データ分布の偏りなどを使って速い方が選べることがある(あった)。
+    /**
+     * BarkingProcess専用メソッド。by jflute
+     * 他の人は絶対呼ばないでください。
+     */
     public void downHitPointHub(){
         downHitPoint();
     }

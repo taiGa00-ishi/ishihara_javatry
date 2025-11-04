@@ -14,7 +14,7 @@ public class Windows extends St6OperationSystem {
     protected String getFileSeparator() {
         return "\\";
     }
-
+    
     @Override
     protected String getUserDirectory() {
         // done ishihara super.は不要です。(というか本来は this. を使うところでそれも省略) by jflute (2025/10/06)

@@ -34,7 +34,7 @@ public abstract class St6OperationSystem {
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    // TODO done ishihara osTypeの残骸あり by jflute (2025/10/20)
+    // done ishihara osTypeの残骸あり by jflute (2025/10/20)
     public St6OperationSystem(String loginId) {
         this.loginId = loginId;
     }

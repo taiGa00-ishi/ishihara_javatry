@@ -495,7 +495,13 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // メソッドに切り出すことを想像して、名前に困るかどうか？が一つの判断基準。
         // (DB設計のテーブル名でのエピソード by いしはらさん)
         //
-        // TODO jflute WindowsとOldWindowsの再利用思考トレーニング (2025/10/06)
+        // done jflute WindowsとOldWindowsの再利用思考トレーニング (2025/10/06)
+        // 別のクラスとかにWindowsのFileSeparatorとして定義して再利用 by いしはらさん
+        // or OldWindows extends Windows で再利用 by いしはらさん
+        // Windows extends OldWindows は変？ by jflute
+        //  abstract Windows by いしはらさん
+        // #1on1: オブジェクト指向の(今その)階層構造の意味について (2025/11/04)
+        // オブジェクト指向はうまくいけばGoodだけど、へんてこりん階層で作っちゃうとつらくなる。
     }
 
     // ===================================================================================

@@ -75,7 +75,7 @@ public class TicketBooth {
     }
 
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        // TODO done ishihara 修行++: TWO(2)が多い、一個のTWOで表現できるようにしたい by jflute (2025/09/22)
+        // done ishihara 修行++: TWO(2)が多い、一個のTWOで表現できるようにしたい by jflute (2025/09/22)
         return doBuyTicket(handedMoney, TicketType.TWO_DAY);
     }
 
