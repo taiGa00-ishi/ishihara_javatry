@@ -21,11 +21,20 @@ package org.docksidestage.javatry.basic.st6.dbms;
  */
 public class St6MySql extends Database {
 
-    // TODO done ishihara 1: offsetの計算を再利用したいところ by jflute (2025/10/20)
-    // TODO done ishihara 2: 2stepから、3stepに変わった時 (真ん中に処理を追加...) by jflute (2025/10/20)
+    // done ishihara 1: offsetの計算を再利用したいところ by jflute (2025/10/20)
+    // done ishihara 2: 2stepから、3stepに変わった時 (真ん中に処理を追加...) by jflute (2025/10/20)
     // そういうときでも、1箇所直せば済むようにしたいところ。
     // (つまり現状は、流れが再利用できてないということ。"1" で個々の処理は再利用できたとしても...)
     
+    // #1on1: 意図してなかった、イメージに引きづられてpublic by いしはらさん
+    // オーバーライドメソッドは、可視性のreduceはできないけど、expandはできる。
+    // 
+    // Database mysql = ...
+    // mysql.doBuildPagingQuery(pageSize, offset); // 呼べない
+    // new St6MySql().doBuildPagingQuery(pageSize, offset); // 呼べる
+    //
+    // 抽象クラスと具象クラスの距離感、例えば、抽象クラスがフレームワーク提供だったり。
+    // TODO ishihara publicにする必要がないので、superに合わせてprotectedに by jflute (2025/11/17)
     @Override
     public String doBuildPagingQuery(int offset, int pageSize) {
         return "limit " + offset + ", " + pageSize;

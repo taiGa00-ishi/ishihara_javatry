@@ -50,7 +50,7 @@ public class Zombie extends Animal {
             return breatheInCount;
         }
     }
-
+    
     // ===================================================================================
     //                                                                               Bark
     //                                                                              ======

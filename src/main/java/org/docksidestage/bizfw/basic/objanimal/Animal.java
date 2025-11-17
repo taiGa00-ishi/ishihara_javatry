@@ -74,7 +74,7 @@ public abstract class Animal implements Loudable {
             throw new IllegalStateException("I'm very tired, so I want to sleep" + getBarkWord());
         }
     }
-
+    
     // ===================================================================================
     //                                                                               Loud
     //                                                                              ======
