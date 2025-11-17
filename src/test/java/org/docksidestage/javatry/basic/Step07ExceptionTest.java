@@ -25,7 +25,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りに実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author TaiGa00-ishi
  */
 public class Step07ExceptionTest extends PlainTestCase {
 
@@ -47,8 +47,12 @@ public class Step07ExceptionTest extends PlainTestCase {
         } finally {
             sea.append("broadway");
         }
-        log(sea); // your answer? =>
+        log(sea); // your answer? => hangarbroadway
     }
+    // tryでthrowerのlandを呼び出している
+    // landメソッドから繋がっているメソッドを追っていくと、onemanメソッドでIllegalStateExceptionがthrowされている
+    // そのため、catchに辿り着いて、seaに"hangar"が追加される
+    // その後、finallyにきて、seaに"broadway"が追加される
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_exception_basic_message() {
@@ -60,8 +64,11 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (IllegalStateException e) {
             sea = e.getMessage();
         }
-        log(sea); // your answer? =>
+        log(sea); // your answer? =>oneman at showbase
     }
+    // seaに入るものを見るとexceptionのメッセージが入ることがわかる
+    // IllegalStateExceptionがthrowされる時のメッセージを見ると"oneman at showbase"となっている
+
 
     /**
      * What class name and method name and row number cause the exception? (you can execute and watch logs) <br>
@@ -75,7 +82,8 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (IllegalStateException e) {
             log(e);
         }
-        // your answer? => 
+        // your answer? => St7BasicExceptionThrowerクラスのonemanメソッドの40行目
+        // スタックトレースの１番上に来ているのが原因出るため
     }
 
     // ===================================================================================
@@ -88,36 +96,46 @@ public class Step07ExceptionTest extends PlainTestCase {
     public void test_exception_hierarchy_Runtime_instanceof_RuntimeException() {
         Object exp = new IllegalStateException("mystic");
         boolean sea = exp instanceof RuntimeException;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => ture
     }
+
+    // IllegalStateExceptionのもとを辿っていくと、extends RuntimeExceptionとなっていたので、
+    // expはRuntimeExceptionのインスタンスであると言えるのでtrueが入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_exception_hierarchy_Runtime_instanceof_Exception() {
         Object exp = new IllegalStateException("mystic");
         boolean sea = exp instanceof Exception;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => true
     }
+    // IllegalStateException -> RuntimeException -> Exception -> Throwable <- implements Serializableとなっている
+    // そのため、expはExceptionのインスタンスであると言えるのでtrueが入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_exception_hierarchy_Runtime_instanceof_Error() {
         Object exp = new IllegalStateException("mystic");
         boolean sea = exp instanceof Error;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => false
     }
+
+    // 上記で関係を書いているが、Errorを継承している箇所がなかったのでfalseが入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_exception_hierarchy_Runtime_instanceof_Throwable() {
         Object exp = new IllegalStateException("mystic");
         boolean sea = exp instanceof Throwable;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => true
     }
+    // Exceptionが継承しているのがThrowableなので元を辿るとtrueが入る
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_exception_hierarchy_Throwable_instanceof_Exception() {
         Object exp = new Throwable("mystic");
         boolean sea = exp instanceof Exception;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => false
     }
+
+    // ThrowableはExceptionを継承していない(あくまでも継承されている立場)のでExceptionのインスタンスの要素がないためfalseが入る
 
     // ===================================================================================
     //                                                                         NullPointer

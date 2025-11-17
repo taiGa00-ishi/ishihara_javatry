@@ -12,6 +12,15 @@ package org.docksidestage.javatry.basic.st6.dbms;
  */
 public abstract class Database {
 
-    public abstract String buildPagingQuery(int pageSize, int pageNumber);
+    public String buildPagingQuery(int pageSize, int pageNumber){
+        int offset = calculateOffset(pageSize, pageNumber);
+        return doBuildPagingQuery(pageSize, offset);
+    }
+
+    protected int calculateOffset(int pageSize, int pageNumber) {
+        return pageSize * (pageNumber - 1);
+    }
+
+    protected abstract String doBuildPagingQuery(int pageSize, int offset);
 
 }
