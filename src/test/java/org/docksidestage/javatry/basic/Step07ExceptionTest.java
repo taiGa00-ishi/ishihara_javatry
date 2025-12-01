@@ -189,7 +189,9 @@ public class Step07ExceptionTest extends PlainTestCase {
             String sea = "mystic";
             String land = !!!sea.equals("mystic") ? null : "oneman";
             String piari = !!!sea.equals("mystic") ? "plaza" : null;
-            int sum = land.length() + piari.length();
+            int landLength = land.length();
+            int piariLength = piari.length();
+            int sum = landLength + piariLength;
             log(sum);
         } catch (NullPointerException e) {
             log(e);
