@@ -18,10 +18,10 @@ package org.docksidestage.javatry.basic;
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.objanimal.Animal;
-import org.docksidestage.bizfw.basic.objanimal.barking.BarkedSound;
 import org.docksidestage.bizfw.basic.objanimal.Cat;
 import org.docksidestage.bizfw.basic.objanimal.Dog;
 import org.docksidestage.bizfw.basic.objanimal.Zombie;
+import org.docksidestage.bizfw.basic.objanimal.barking.BarkedSound;
 import org.docksidestage.bizfw.basic.objanimal.loud.AlarmClock;
 import org.docksidestage.bizfw.basic.objanimal.loud.Loudable;
 import org.docksidestage.bizfw.basic.objanimal.runner.FastRunner;
@@ -418,10 +418,23 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // 代わりに interface。
         // 名前の付け方も、オブジェクト中心なのか？操作中心なのか？ (コンセプトが違うから)
         
-        // TODO jflute 次回、特殊なinterfaceの使われ方の補足も e.g. ColorBox (2025/10/06)
+        // done jflute 次回、特殊なinterfaceの使われ方の補足も e.g. ColorBox (2025/10/06)
         // フレームワークとか、ライブラリでのinterfaceの使われ方なども。
         // interfaceだと、実装が全然再利用できなくて、まだメリットがピンポイントが来ない by いしはらさん
         // (再利用の方法の話も)
+        
+        // 
+        // #1on1: public abstract class AbstractColorBox implements ColorBox {
+        // このパターンなぜ？ interface 要る？
+        //
+        // 1. 外から呼べるメソッドが何なのかわかりやすい
+        // 2. abstractの内部用publicメソッドをinterfaceで隠蔽できる
+        // 3. ラップクラスを作るときなどabstractは飛ばしてinterfaceだけimplementsしたい
+        //
+        // 外交(ポリモーフィズム)はinterfaceさんに全部お任せ。
+        // 内政(サブクラスの形付け/実装継承)に抽象クラスは集中する。
+        //
+        // #1on1: interfaceに I を付ける文化、付けない文化、jfluteの考えは？話
     }
 
     // ===================================================================================

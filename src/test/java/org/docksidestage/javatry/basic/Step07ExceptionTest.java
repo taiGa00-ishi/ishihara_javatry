@@ -86,6 +86,7 @@ public class Step07ExceptionTest extends PlainTestCase {
         // スタックトレースの１番上に来ているのが原因出るため
     }
 
+    // TODO jflute 次回1on1, エラーと例外の違い、NullPo, チェック例外 (2025/12/01)
     // ===================================================================================
     //                                                                           Hierarchy
     //                                                                           =========
@@ -232,10 +233,10 @@ public class Step07ExceptionTest extends PlainTestCase {
         try {
             throwCauseFirstLevel();
             fail("always exception but none");
-        } catch (IllegalStateException e) {
-            Throwable cause = e.getCause();
-            sea = cause.getMessage();
-            land = cause.getClass().getSimpleName();
+        } catch (IllegalStateException e) { // StateException
+            Throwable cause = e.getCause(); // firstのcauseつまりsecondの例外 => IllegalArgument
+            sea = cause.getMessage(); // IllegalArgumentのメッセージ
+            land = cause.getClass().getSimpleName(); // IllegalArgumentのクラス名
             log(sea); // your answer? => Failed to call the third help method: symbol=-1
             log(land); // your answer? => IllegalArgumentException
             log(e); // your answer? =>  eは何を指している? <- stacktrace?
@@ -252,6 +253,9 @@ public class Step07ExceptionTest extends PlainTestCase {
     // ホバーしてみるとそれぞれの例外クラスのインスタンスであることがわかる
     // それだったらlandってなんでIllegalArgumentExceptionになるの？だろう
     // それぞれのレベルでeに違う例外インスタンスを宣言(catch)しているのにNumberFormatExceptionをキープできていのはなぜ？
+    //
+    // #1on1: 具体的に追っていった。(2025/12/01)
+    // 文法的な例外の階層構造について説明、それがなぜ必要なのか？は次のエクササイズにて。
     private void throwCauseFirstLevel() {
         int symbol = Integer.MAX_VALUE - 0x7ffffffe;
         try {

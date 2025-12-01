@@ -34,7 +34,7 @@ public class St6MySql extends Database {
     // new St6MySql().doBuildPagingQuery(pageSize, offset); // 呼べる
     //
     // 抽象クラスと具象クラスの距離感、例えば、抽象クラスがフレームワーク提供だったり。
-    // TODO ishihara publicにする必要がないので、superに合わせてprotectedに by jflute (2025/11/17)
+    // done ishihara publicにする必要がないので、superに合わせてprotectedに by jflute (2025/11/17)
     @Override
     protected String doBuildPagingQuery(int offset, int pageSize) {
         return "limit " + offset + ", " + pageSize;
