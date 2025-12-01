@@ -153,7 +153,12 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (NullPointerException e) {
             log(e);
         }
-        // your answer? => 
+        // your answer? => 5162710183389028792L
+        // 実際はnullだったのはland変数で、発生した行番号は151行目(String lowerCase = land.toLowerCase();)
+        // landに入るのがnullなのでlowercaseにするときにNullPointerExceptionが発生する
+        // 早とちりしてNullPointerExceptionのIDを書いてしまった
+        // 問題をちゃんと見れていなかった
+        // エラーメッセージを見せるなら、lowerCaseのThrow new NullPointerExceptionしているところにメッセージを入れれば良い？
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -167,7 +172,12 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (NullPointerException e) {
             log(e);
         }
-        // your answer? => 
+        // your answer? => 問題となった変数はpiariで行数は170行目(int sum = land.length() + piari.length();)
+        // length()の呼び出し先に行くとNullPointerExceptionがはっきり書かれていないがString.javaの最初の注意書きに以下のように書かれていたので、
+        // 基本的にnullを渡すとNullPointerExceptionが発生することがわかる
+        // * <p> Unless otherwise noted, passing a <tt>null</tt> argument to a constructor
+        // * or method in this class will cause a {@link NullPointerException} to be
+        // * thrown.
     }
 
     /**
@@ -194,6 +204,16 @@ public class Step07ExceptionTest extends PlainTestCase {
      * (new java.io.File(".") の canonical path を取得してログに表示、I/Oエラーの時はメッセージとスタックトレースを代わりに表示)
      */
     public void test_exception_checkedException_basic() {
+        // 1,canonical pathの取得 <- 現在のパスから絶対パスに正規変換
+        // 2,ログに表示
+        // 3,IOExceptionが発生したら、メッセージとスタック
+        try{
+            java.io.File currentPath = new java.io.File(".");
+            String canonicalPath = currentPath.getCanonicalPath();
+            log(canonicalPath);
+        } catch (java.io.IOException e) {
+            log("I/O error has occurred.: " + e.getMessage(), e);
+        }
     }
 
     // ===================================================================================
@@ -214,12 +234,22 @@ public class Step07ExceptionTest extends PlainTestCase {
             Throwable cause = e.getCause();
             sea = cause.getMessage();
             land = cause.getClass().getSimpleName();
-            log(sea); // your answer? => 
-            log(land); // your answer? => 
-            log(e); // your answer? => 
+            log(sea); // your answer? => Failed to call the third help method: symbol=-1
+            log(land); // your answer? => IllegalArgumentException
+            log(e); // your answer? =>  eは何を指している? <- stacktrace?
+            // caused byの最後に表示されているのはNumberFormatException
         }
     }
-
+    // まずFirstLevelでMAX - 0x7ffffffeをsymbolに入れている
+    // 0x7ffffffeは2147483646,maxは2147483647,symbolには1が入る
+    // secondで-2をしてsymbol=-1となるのでif文の中に入りThirdLevelに行く
+    // ThirdLevelでsymbolが負の数なのでInteger.valueOf("piari")が呼ばれる
+    // ここでValueOfのNumberFormatExceptionが発生し、thirdLevelの呼び出しもとのsecondでエラーがキャッチされる
+    // NumberFormatExceptionをキャッチしたのでIllegalArgumentExceptionがthrowされる
+    // eは何を指している? <- stacktrace?、そのExceptionのインスタンス？
+    // ホバーしてみるとそれぞれの例外クラスのインスタンスであることがわかる
+    // それだったらlandってなんでIllegalArgumentExceptionになるの？だろう
+    // それぞれのレベルでeに違う例外インスタンスを宣言(catch)しているのにNumberFormatExceptionをキープできていのはなぜ？
     private void throwCauseFirstLevel() {
         int symbol = Integer.MAX_VALUE - 0x7ffffffe;
         try {

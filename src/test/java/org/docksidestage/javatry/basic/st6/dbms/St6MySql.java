@@ -36,7 +36,7 @@ public class St6MySql extends Database {
     // 抽象クラスと具象クラスの距離感、例えば、抽象クラスがフレームワーク提供だったり。
     // TODO ishihara publicにする必要がないので、superに合わせてprotectedに by jflute (2025/11/17)
     @Override
-    public String doBuildPagingQuery(int offset, int pageSize) {
+    protected String doBuildPagingQuery(int offset, int pageSize) {
         return "limit " + offset + ", " + pageSize;
     }
 }
