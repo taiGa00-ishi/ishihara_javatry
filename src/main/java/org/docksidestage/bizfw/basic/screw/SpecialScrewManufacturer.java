@@ -20,12 +20,13 @@ import org.docksidestage.bizfw.basic.screw.exception.ScrewCannotMakeBySpecExcept
 /**
  * The manufacturer(製造業者) of special screw(特別なねじ).
  * @author jflute
+ * @author TaiGa00-ishi
  */
 public class SpecialScrewManufacturer {
 
     public SpecialScrew makeSpecialScrew(ScrewSpec screwSpec) {
         if (isKawaiiFaceScrewSpec(screwSpec)) {
-            String msg = "The kawaii face is already unsupported so we cannot make it.";
+            String msg = "The kawaii face is already unsupported so we cannot make it.: screwSpec=" + screwSpec.getSpecText();
             throw new ScrewCannotMakeBySpecException(msg);
         }
         return new SpecialScrew(screwSpec.getSpecText());

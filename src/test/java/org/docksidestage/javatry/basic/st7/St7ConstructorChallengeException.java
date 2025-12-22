@@ -17,6 +17,7 @@ package org.docksidestage.javatry.basic.st7;
 
 /**
  * @author jflute
+ * @author TaiGa00-ishi
  */
 public class St7ConstructorChallengeException extends RuntimeException {
 
@@ -24,5 +25,9 @@ public class St7ConstructorChallengeException extends RuntimeException {
 
     public St7ConstructorChallengeException(String msg) {
         super(msg);
+    }
+
+    public St7ConstructorChallengeException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 }

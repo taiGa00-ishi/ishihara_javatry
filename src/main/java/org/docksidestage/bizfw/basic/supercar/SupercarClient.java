@@ -23,6 +23,7 @@ import org.docksidestage.bizfw.basic.supercar.SupercarManufacturer.Supercar;
 /**
  * The client(顧客) of supercar.
  * @author jflute
+ * @author TaiGa00-ishi
  */
 public class SupercarClient {
 
@@ -31,8 +32,12 @@ public class SupercarClient {
     public void buySupercar() {
         SupercarDealer dealer = createDealer();
         String clientRequirement = prepareClientRequirement();
-        Supercar orderedCustomCar = dealer.orderSupercar(clientRequirement);
-        orderedCustomCarCollection.add(orderedCustomCar);
+        try{
+            Supercar orderedCustomCar = dealer.orderSupercar(clientRequirement);
+            orderedCustomCarCollection.add(orderedCustomCar);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Failed to buy supercar: clientRequirement=" + clientRequirement, e);
+        }
     }
 
     private String prepareClientRequirement() {

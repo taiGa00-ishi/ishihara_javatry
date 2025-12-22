@@ -299,9 +299,13 @@ public class Step07ExceptionTest extends PlainTestCase {
             // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
             // What happens? Write situation and cause here. (何が起きた？状況と原因をここに書いてみましょう)
             // - - - - - - - - - -
-            //
-            //
-            //
+            // 原因はハンドルの製造に必要な特殊なネジの製造がもうできないから今回のように車ができるまでに問題が発生した。
+            // 大まかな流れとしては、まずクライアントが買いたい車の要望をディーラーに注文して、ディーラーがスーパーカーの製造業者にクライアントからの要望を元にカタログを指定します
+            // そして、スーパーカーの製造業者はそのカタログに必要なハンドルをハンドルの製造業者に注文します
+            // ハンドル業者はその注文に従って製造しようとします。その時にそのハンドルに必要なスペックのクリンチャー(\(^_^)/)を持つネジの製造業者に注文します
+            // しかし、そのネジの製造業者はその特殊なネジをもう製造できないため、スーパーカーの製造に問題が発生します。
+            // 製造における例外のメッセージはThe kawaii face is already unsupported so we cannot make it.
+            //　\(^_^)/のクリンチャーはもうサポートされていないみたいである。
             // _/_/_/_/_/_/_/_/_/_/
         }
     }
@@ -339,7 +343,7 @@ public class Step07ExceptionTest extends PlainTestCase {
         try {
             helpThrowIllegalState();
         } catch (IllegalStateException e) {
-            throw new St7ConstructorChallengeException("Failed to do something.");
+            throw new St7ConstructorChallengeException("Failed to do something.", e);
         }
     }
 
@@ -361,7 +365,7 @@ public class Step07ExceptionTest extends PlainTestCase {
         // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
         // Write here. (ここに書いてみましょう)
         // - - - - - - - - - -
-        //
+        // Exceptionはあらかじめ予測がつくような異常系の例外でErrorは予測がつかなくて原因の調査に時間を要して対処が困難である異常系の事象のこと
         //
         //
         // _/_/_/_/_/_/_/_/_/_/
