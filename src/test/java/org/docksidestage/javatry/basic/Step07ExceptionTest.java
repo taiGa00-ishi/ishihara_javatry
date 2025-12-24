@@ -322,6 +322,47 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (RuntimeException e) {
             log("*No hint here for training.", e);
         }
+        
+        // #1on1: 例外の翻訳Good (2025/12/24)
+        // 例外の翻訳の実装もとても良い。
+        //
+        // RuntimeException統一、いったんそのようにしてみたという話。
+        // 専用の例外クラスを作る方が、タイトル的な役割になって丁寧だけど...必須ではない。
+        // 現場では、間の子な感じで、自分たちがthrowした例外であることだけを判別できるようにってのが多い。
+        //  e.g. throw new [アプリ名]SystemException("Failed to make steering wheel for steeringWheelId: " + steeringWheelId, e);
+        // フレームワークがthrowする例外の場合は、費用対効果が高いのでわりかしきっちりやることが多い。
+        // (LastaFluteの例ちょこっと)
+        /*
+        try {
+            TicketBuyResult buyResult = booth.buyFourDayPassport(handedMoney);
+        } catch (TicketSoldOutException e) { // ifの代わり
+            // 何かしらリカバリ処理を行う
+        }
+         */
+        // バグだとしても固有例外を投げるか？
+        // 厳密にはthrowする側(する瞬間)は、それがバグなのか？業務的なものか？はわからないので、
+        // 面倒さをignoreして考えると、厳密には固有例外を投げたほうがベターではある。
+        // (フレームワークはわりと業務から距離が遠いので、確定できないことが多いのでそうすることが多い)
+        /*
+                 catch        catch        catch
+     <---- 例外  /      例外  /     例外    /    例外
+             \ /         \ /          \ /       |
+   o          |           |            |         \
+  /|\   ->    A     ->    B    ->     C      ->      D -> D'
+  /\           |     |        PK           ^^v
+               |     |                     も
+               +設定ファイル (PK)
+         */
+        // throwする側は自分のレイヤーで知ってる事実だけしか載せれないので、
+        // だからこそ例外の翻訳をする必要もある。
+        //
+        // あと、エラーメッセージを正しく読むため (読もうと思ってもらうために) に、
+        // 例外の翻訳のコンセプトを知ってもらうという狙い。
+        //
+        // ↓ちょっとこの話も:
+        //
+        // エラーメッセージ読め読め大合唱
+        // https://jflute.hatenadiary.jp/entry/20130522/errorsinging
     }
 
     // ===================================================================================
