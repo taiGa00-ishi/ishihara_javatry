@@ -55,6 +55,7 @@ public class Step08Java8FunctionTest extends PlainTestCase {
 
         log("...Executing anonymous class callback");
         helpCallbackConsumer(new Consumer<String>() {
+            @Override
             public void accept(String stage) {
                 log(stage + ": " + title);
             }
@@ -80,6 +81,12 @@ public class Step08Java8FunctionTest extends PlainTestCase {
     // なのでacceptも呼ばれて2つ目のログの時にちゃんとdockside : overになる
     // 3つ目は無名の関数の別の書き方(ラムダ関数の書き方)をしただけなので、同じ処理である
     // 4つ目は3つ目の関数の時の処理が1行だけならさらに短く省略できるので、同じ処理をしている短縮版である。なので同じ結果が出る。
+    
+    // #1on1: コールバックとは？ (2026/01/05)
+    // A -> B
+    // A <- B // 厳密にはAというよりかはA'だけど
+    // コールバックは追うのなかなか大変だった by いしはらさん
+    // わかります、これはこれで読むのコツが要る by jflute
 
     /**
      * What is order of strings by log(). (write answer as comma-separated) <br>
