@@ -86,7 +86,7 @@ public class Step07ExceptionTest extends PlainTestCase {
         // スタックトレースの１番上に来ているのが原因出るため
     }
 
-    // TODO jflute 次回1on1, エラーと例外の違い、NullPo, チェック例外 (2025/12/01)
+    // done jflute 次回1on1, エラーと例外の違い、NullPo, チェック例外 (2025/12/01)
     // ===================================================================================
     //                                                                           Hierarchy
     //                                                                           =========
@@ -137,6 +137,34 @@ public class Step07ExceptionTest extends PlainTestCase {
     }
 
     // ThrowableはExceptionを継承していない(あくまでも継承されている立場)のでExceptionのインスタンスの要素がないためfalseが入る
+    /*
+                           +-----------------+
+                           |                 |
+                  +------------------+       |
+                  |     Throwable    | <>----+
+                  +------------------+
+                           △ 
+                           ｜
+            +------------------------------+
+            |                              |
+   +--------------------+        +-------------------+
+   |       Error        |        |    Exception      |
+   +--------------------+        +-------------------+
+     NoSuchMethodError                    △ 
+     OutOfMemoryError                     ｜
+                           +------------------------------+
+                           |                              |
+                 +--------------------+        +-------------------+
+                 |  RuntimeException  |        |    XxxException   |
+                 +--------------------+        +-------------------+
+                           △                 IOException, SQLException
+                           ｜
+                   NullPointerException            
+                   IllegalStateException
+     */
+    // #1on1: throwする瞬間にエラー扱いできるもの、できない (2026/01/05)
+    // 例外は、catchされるまでは「(システム)エラー扱い」か「正常なレアケース」かは、
+    // 厳密にはわからないでthrowされている感覚。
 
     // ===================================================================================
     //                                                                         NullPointer
@@ -217,6 +245,10 @@ public class Step07ExceptionTest extends PlainTestCase {
         } catch (java.io.IOException e) {
             log("I/O error has occurred.: " + e.getMessage(), e);
         }
+        // #1on1: チェック例外とは？チェック例外流行ってない？話 (2026/01/05)
+        // もう別にいいでしょって場面でも、わりとthrows宣言されていて呼び出し側が面倒なことが多い。
+        // さらにLambda式と相性が悪い。
+        // (ちなみに、Kotlinにはチェック例外はない。引き継がなかったってこと)
     }
 
     // ===================================================================================
@@ -384,6 +416,7 @@ public class Step07ExceptionTest extends PlainTestCase {
         try {
             helpThrowIllegalState();
         } catch (IllegalStateException e) {
+            // #1on1: 元々は例外の翻訳ではなく上書き、してしまうとCaused byが全部消えてしまう。 (2026/01/05)
             throw new St7ConstructorChallengeException("Failed to do something.", e);
         }
     }
@@ -410,5 +443,6 @@ public class Step07ExceptionTest extends PlainTestCase {
         //
         //
         // _/_/_/_/_/_/_/_/_/_/
+        // #1on1: 例外のHierarchyのところでメモ書いている (2026/01/05)
     }
 }
