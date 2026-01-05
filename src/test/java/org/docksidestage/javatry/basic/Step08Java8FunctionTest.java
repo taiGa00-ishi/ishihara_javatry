@@ -33,7 +33,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りに実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author TaiGa00-ishi
  */
 public class Step08Java8FunctionTest extends PlainTestCase {
 
@@ -68,11 +68,18 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         log("...Executing lambda expression style callback");
         helpCallbackConsumer(stage -> log(stage + ": " + title));
 
-        // your answer? => 
+        // your answer? => yes
 
         // cannot reassign because it is used at callback process
         //title = "wave";
     }
+    // 4種類どれもコールバックとしてbroadway, dockside : over, hangerを出力する
+    // 1つ目はコールバック関数を呼び出す際にSt8BasicConsumerクラスのインスタンスを渡す(titleにoverが渡っている)
+    // 実際にコールバックが呼ばれた際にSt8BasicConsumerのインスタンスの.acceptも呼ばれて2つ目のログの時にちゃんとdockside : overになる
+    // 2つ目の処理は先ほどのコールバック関数に渡すものを名前を持たないConsumer<String>型を返す無名な関数を定義している
+    // なのでacceptも呼ばれて2つ目のログの時にちゃんとdockside : overになる
+    // 3つ目は無名の関数の別の書き方(ラムダ関数の書き方)をしただけなので、同じ処理である
+    // 4つ目は3つ目の関数の時の処理が1行だけならさらに短く省略できるので、同じ処理をしている短縮版である。なので同じ結果が出る。
 
     /**
      * What is order of strings by log(). (write answer as comma-separated) <br>
@@ -84,7 +91,8 @@ public class Step08Java8FunctionTest extends PlainTestCase {
             log(stage);
         });
         log("lost river");
-        // your answer? => 
+        // your answer? => harbor, broadway, dockside, hanger, lost river
+        // コールバック関数で呼び出しているログの２つ目もシンプルなlogを出すだけのラムダ関数なので、上から順番に出力される
     }
 
     private class St8BasicConsumer implements Consumer<String> {
@@ -116,7 +124,8 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         String sea = helpCallbackFunction(number -> {
             return label + ": " + number;
         });
-        log(sea); // your answer? => 
+        log(sea); // your answer? => number: 7
+        // numberの場所にはcallback関数内で7がセットされるのでseaの中身として"number: 7"となる
     }
 
     private String helpCallbackFunction(Function<Integer, String> oneArgLambda) {
