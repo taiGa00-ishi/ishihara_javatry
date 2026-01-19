@@ -204,6 +204,8 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         // さらにmap()でのチェーンによる制御。
         // TypeScript, Kotlinでの話。
         // に比べればJavaのOptionalは若干中途半端話。
+        
+        // TODO jflute 次回1on1で、業務的に絶対にあるでしょ、ってケースのOptionalをどう扱う？ (2026/01/19)
     }
 
     /**
