@@ -158,7 +158,7 @@ public class Step08Java8FunctionTest extends PlainTestCase {
      */
     public void test_java8_lambda_convertStyle_basic() {
         helpCallbackSupplier(() -> {
-            return "broadway";
+            return "broadway".concat("aaaaaaaaaaaa").replace('a', 'b').substring(111).toLowerCase();
         }); // sea
 
         helpCallbackSupplier(() -> "dockside"); // land
@@ -170,6 +170,7 @@ public class Step08Java8FunctionTest extends PlainTestCase {
 
     // memo Block式は{} と returnがある
     // expression型は{}がなく -> の先にreturnがない
+    // #1on1: DBFluteの例とかで、コードデザイン的にblockかexpressionを使い分ける話 (2026/01/19)
 
     private void helpCallbackSupplier(Supplier<String> oneArgLambda) {
         String supplied = oneArgLambda.get();
@@ -195,6 +196,14 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         }
         // your answer? => yes
         // selectMemberのラムダ式でnullチェックをした後でoldselectMemberをしているのと同じなので、自ずと同じ文字列が出ると読める。
+
+        // #1on1: Optionalの根源的なメリット(やりたいこと)は、もうこれ。(2026/01/19)
+        // oldスタイルよりも安全、事前にないかもしれないことを開発者に強制的に意識させる。
+        // Java8 (2015年くらい) にようやく入った...なんでそんな遅かったんだろう推測。 (2026/01/19)
+        // ifPresent()の存在。ある程度のシンタックスシュガーがないといくら安全でも流行らない(かも!?)。
+        // さらにmap()でのチェーンによる制御。
+        // TypeScript, Kotlinでの話。
+        // に比べればJavaのOptionalは若干中途半端話。
     }
 
     /**
@@ -282,6 +291,8 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         log(dstore); // your answer? => *no reason: someone was not present
         log(amba); // your answer? => *no reason: someone was not present
         log(miraco); // your answer? => 12
+        
+        // TODO jflute 次回1on1, map/flatMap() (2026/01/19)
     }
 
     /**
