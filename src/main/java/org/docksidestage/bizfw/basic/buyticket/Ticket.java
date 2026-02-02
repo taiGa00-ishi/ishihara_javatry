@@ -15,6 +15,7 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 /**
@@ -45,6 +46,8 @@ public class Ticket {
     private int usedDays;
     /** 当日すでに入園済みであるかどうかを示します。 */
     private boolean alreadyIn;
+    /** チケットの時間を使用する示す(テストでカスタマイズする用) */
+    private Clock clock;
 
     // ===================================================================================
     //                                                                         Constructor
@@ -62,6 +65,28 @@ public class Ticket {
         this.nightOnly = nightOnly;
         this.ticketType = ticketType;
         this.usedDays = 0;
+        this.clock = Clock.systemDefaultZone();
+    }
+
+    // ===================================================================================
+    //                                                                         Constructor
+    //                                                                         ===========
+    /**
+     * テスト用、NightOnlyのテスト用に時計をセットしたインスタンスを作成。
+     * 新しいチケットインスタンスを構築します。
+     * @param displayPrice チケットの表示価格。
+     * @param validDays チケットの有効日数。
+     * @param nightOnly 夜間限定のチケットであるか。
+     * @param ticketType チケットの具体的な種類。
+     * @param clock チケットを使用する時間。
+     */
+    public Ticket(int displayPrice, int validDays, boolean nightOnly, TicketType ticketType, Clock clock) {
+        this.displayPrice = displayPrice;
+        this.validDays = validDays;
+        this.nightOnly = nightOnly;
+        this.ticketType = ticketType;
+        this.usedDays = 0;
+        this.clock = clock;
     }
 
     // ===================================================================================
@@ -79,14 +104,14 @@ public class Ticket {
     // #1on1: 内部で現在日時を解決するファーストステップはOK。
     // 一方で、UnitTestで自在に昼/夜のテストをするというのが大変。
     //
-    // TODO ishihara 修行#: UnitTestの都合の解決、昼でも夜でも自在にいつでもテストできるように by jflute (2025/09/08)
+    // TODO done ishihara 修行#: UnitTestの都合の解決、昼でも夜でも自在にいつでもテストできるように by jflute (2025/09/08)
     // hint: とりあえずstep6をやってからでOKです。
     public void doInPark() {
         if (usedDays >= validDays && alreadyIn) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
         int hour = now.getHour();
 
         if (this.nightOnly && (hour < 17 || hour > 23)) {

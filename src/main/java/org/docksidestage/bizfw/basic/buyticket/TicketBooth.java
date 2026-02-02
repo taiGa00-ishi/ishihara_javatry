@@ -15,6 +15,9 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * チケット売り場の情報を管理しています
  * <p>ここではチケットのそれぞれの値段、チケットの残り枚数、チケットの購入プロセスを管理しています。</p>
@@ -31,13 +34,14 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private int quantity = MAX_QUANTITY;
+    private Map<TicketType,Integer> quantity = new HashMap<>();
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBooth() {
+        quantity = setEachTicketQuantity();
     }
 
     // ===================================================================================
@@ -101,13 +105,14 @@ public class TicketBooth {
     // rename後にoption + enter(return)で一括修正した
     private TicketBuyResult doBuyTicket(int handedMoney, TicketType ticketType) {
         int ticketPrice = ticketType.getPrice();
-        if (quantity <= 0) {
+        validationKeyNull(ticketType);
+        if ( quantity.get(ticketType) <= 0 ) {
             throw new TicketSoldOutException("Sold out");
         }
         if (handedMoney < ticketPrice) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        --quantity;
+        decreaseTicketQuantity(ticketType, quantity);
         if (salesProceeds != null) {
             salesProceeds = salesProceeds + ticketPrice;
         } else {
@@ -140,9 +145,30 @@ public class TicketBooth {
     //                                                                            Accessor
     //                                                                            ========
 
+    /** それぞれのチケットの販売数の初期化したハッシュマップを返します。 */
+    private Map<TicketType,Integer> setEachTicketQuantity() {
+        Map<TicketType,Integer> result = new HashMap<>();
+        for (TicketType ticketType : TicketType.values()) {
+            result.put(ticketType, MAX_QUANTITY);
+        }
+        return result;
+    }
+
+    /** 指定のチケットタイプの枚数を減らす */
+    private void decreaseTicketQuantity(TicketType ticketType, Map<TicketType,Integer> ticketQuantity) {
+        ticketQuantity.put(ticketType, ticketQuantity.get(ticketType) - 1);
+    }
+
+    /** マップにないキーの時にExceptionを返す。 */
+    private void validationKeyNull(TicketType ticketType) {
+        if (quantity.get(ticketType) == null) {
+            throw new NullPointerException("The ticket type is not in sold tickets group.");
+        }
+    }
+
     /** チケットの残り枚数を返します。 */
-    public int getQuantity() {
-        return quantity;
+    public int getQuantity(TicketType ticketType) {
+        return quantity.get(ticketType);
     }
 
     /** 売上金額を返します。 */

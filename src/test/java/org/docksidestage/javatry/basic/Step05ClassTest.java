@@ -15,6 +15,10 @@
  */
 package org.docksidestage.javatry.basic;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
@@ -46,7 +50,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_howToUse_basic() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
-        int sea = booth.getQuantity();
+        int sea = booth.getQuantity(TicketType.ONE_DAY);
         log(sea); // your answer? => 9
     }
     // 最初にTicketBoothのインスタンスが作成されたときにこのインスタンスが持っているプロパティは
@@ -97,7 +101,7 @@ public class Step05ClassTest extends PlainTestCase {
         } catch (TicketShortMoneyException continued) {
             log("Failed to buy one-day passport: money=" + handedMoney, continued);
         }
-        return booth.getQuantity();
+        return booth.getQuantity(TicketType.ONE_DAY);
     }
 
     // ===================================================================================
@@ -148,7 +152,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_letsFix_refactor_recycle() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
-        log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
+        log(booth.getQuantity(TicketType.ONE_DAY), booth.getSalesProceeds()); // should be same as before-fix
     }
 
     // ===================================================================================
@@ -322,6 +326,39 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
+    /**
+     * (Clockを使って時間を固定し、夜間限定チケットの入園ロジックをテストする)
+     */
+    public void test_class_moreFix_nightOnlyWithClock() {
+        // 夜の20時に固定したClock
+        Clock nightClock = Clock.fixed(
+                LocalDateTime.of(2026, 1, 1, 20, 0).atZone(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+
+        // 昼の10時に固定したClock
+        Clock dayClock = Clock.fixed(
+                LocalDateTime.of(2026, 1, 1, 10, 0).atZone(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault()
+        );
+
+        Ticket nightTicketAtNight = new Ticket(7400, 2, true, TicketType.NIGHT_ONLY_TWO_DAY, nightClock);
+        nightTicketAtNight.doInPark();
+        log("approved to do park in with night only ticket when 8 p.m.: usedDays=" + nightTicketAtNight.getUsedDays()); // 1
+
+        Ticket nightTicketAtDay = new Ticket(7400, 2, true, TicketType.NIGHT_ONLY_TWO_DAY, dayClock);
+        try {
+            nightTicketAtDay.doInPark();
+        } catch (IllegalStateException e) {
+            log("failed to do park in 'cause it's still in the day time: " + e.getMessage());
+        }
+
+        // 通常チケット
+        Ticket normalTicketAtDay = new Ticket(7400, 1, false, TicketType.ONE_DAY, dayClock);
+        normalTicketAtDay.doInPark();
+        log("approved to do park in with a normal ticket: usedDays=" + normalTicketAtDay.getUsedDays()); // 1
+    }
+
     // done ishihara 修行++: TicketクラスのJavaDocを書いてみてください by jflute (2025/09/08)
     // #1on1: Ticketクラスは多くの人が利用するクラスと想定して (2025/08/25)
     // 質問: 現場であんまりコメント見かけないけど、どういうルールなんだろう？
@@ -338,7 +375,7 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
-    // TODO ishihara 修行#: 在庫分けるスタイルでリファクタリングしてみましょう by jflute (2025/09/22)
+    // TODO done ishihara 修行#: 在庫分けるスタイルでリファクタリングしてみましょう by jflute (2025/09/22)
     // ===================================================================================
     //                                                                         Devil Stage
     //                                                                         ===========
@@ -350,5 +387,33 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_zonedQuantity() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+
+        // 購入前の各チケットの在庫を確認（すべて10枚）
+        log("=== 購入前 ===");
+        log("OneDay: " + booth.getQuantity(TicketType.ONE_DAY));
+        log("TwoDay: " + booth.getQuantity(TicketType.TWO_DAY));
+        log("FourDay: " + booth.getQuantity(TicketType.FOUR_DAY));
+        log("NightOnlyTwoDay: " + booth.getQuantity(TicketType.NIGHT_ONLY_TWO_DAY));
+
+        // OneDayPassportを購入
+        booth.buyOneDayPassport(10000);
+
+        // OneDayの在庫だけが減り、他のチケットの在庫は変わらないことを確認
+        log("=== OneDay購入後 ===");
+        log("OneDay: " + booth.getQuantity(TicketType.ONE_DAY)); // 9になるはず
+        log("TwoDay: " + booth.getQuantity(TicketType.TWO_DAY)); // 10のまま
+        log("FourDay: " + booth.getQuantity(TicketType.FOUR_DAY)); // 10のまま
+        log("NightOnlyTwoDay: " + booth.getQuantity(TicketType.NIGHT_ONLY_TWO_DAY)); // 10のまま
+
+        // TwoDayPassportを購入
+        booth.buyTwoDayPassport(20000);
+
+        // TwoDayの在庫だけが減り、他は変わらないことを確認
+        log("=== TwoDay購入後 ===");
+        log("OneDay: " + booth.getQuantity(TicketType.ONE_DAY)); // 9のまま
+        log("TwoDay: " + booth.getQuantity(TicketType.TWO_DAY)); // 9になるはず
+        log("FourDay: " + booth.getQuantity(TicketType.FOUR_DAY)); // 10のまま
+        log("NightOnlyTwoDay: " + booth.getQuantity(TicketType.NIGHT_ONLY_TWO_DAY)); // 10のまま
     }
 }
