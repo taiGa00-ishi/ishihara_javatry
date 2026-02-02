@@ -18,6 +18,8 @@ package org.docksidestage.bizfw.basic.buyticket;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO ishihara author追加お願いします。せっかくなのでいしはらさんの作品ということで (全体的に) by jflute (2026/02/02)
+// 最後、コードの体裁をしっかり仕上げるという習慣をつけるのも大事。
 /**
  * チケット売り場の情報を管理しています
  * <p>ここではチケットのそれぞれの値段、チケットの残り枚数、チケットの購入プロセスを管理しています。</p>
@@ -34,6 +36,8 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // TODO ishihara 複数のものを扱うオブジェクトなので、複数感が変数名に欲しい by jflute (2026/02/02)
+    // e.g. quantities, quantityMap
     private Map<TicketType,Integer> quantity = new HashMap<>();
     private Integer salesProceeds; // null allowed: until first purchase
 

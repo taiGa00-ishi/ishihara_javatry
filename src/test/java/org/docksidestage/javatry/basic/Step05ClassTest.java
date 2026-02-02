@@ -375,7 +375,7 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
-    // TODO done ishihara 修行#: 在庫分けるスタイルでリファクタリングしてみましょう by jflute (2025/09/22)
+    // done ishihara 修行#: 在庫分けるスタイルでリファクタリングしてみましょう by jflute (2025/09/22)
     // ===================================================================================
     //                                                                         Devil Stage
     //                                                                         ===========
