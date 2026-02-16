@@ -37,9 +37,15 @@ public abstract class Animal implements Loudable {
     //                                                                         ===========
     public Animal() {
         hitPoint = getInitialHitPoint();
-        this.barkingProcess = new BarkingProcess(this, () -> Animal.this.downHitPoint());
+
+        // #1on1: 仲介役オブジェクトの可視性を究極まで狭めた話 (2026/02/16)
+        this.barkingProcess = createBarkingProcess();
     }
 
+    protected BarkingProcess createBarkingProcess() {
+        return new BarkingProcess(this, () -> downHitPoint());
+    }
+    
     protected int getInitialHitPoint() {
         return 10; // as default
     }
@@ -51,6 +57,8 @@ public abstract class Animal implements Loudable {
         return barkingProcess.bark();
     }
 
+    // TODO ishihara getBarkWord()もできればprotectedに戻したい (元々がprotectedなので) by jflute (2026/02/16)
+    // コールバックでもいいし、コールバックを使わないやり方でもいいし。
     public abstract String getBarkWord();
 
     // ===================================================================================
@@ -58,7 +66,7 @@ public abstract class Animal implements Loudable {
     //                                                                           =========
     // #1on1: protectedは、サブクラスに見せる、もしくは、同じパッケージに見せる
     // done ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
-    // TODO Done ishihara 修行#: BarkingProcess以外の人が呼べちゃうので、public Hubも使わずに実現したいところ by jflute (2025/11/04)
+    // Done ishihara 修行#: BarkingProcess以外の人が呼べちゃうので、public Hubも使わずに実現したいところ by jflute (2025/11/04)
     // (hint: 先のstepに進んで、何かピンと来たときに対応するでOK)
     protected void downHitPoint() {
         --hitPoint;

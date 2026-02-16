@@ -33,13 +33,15 @@ public class BarkingProcess {
     }
 
     protected void breatheIn() { // actually depends on barking
+        // TODO ishihara 修行#: animalへの依存を無くせたら無くしたいところ by jflute (2026/02/16)
+        // (BarkingProcessのクラス内で、Animalクラスへの参照を無くしたい)
+        // hint1: インターフェースにとらわれていても大丈夫だよ
         if (animal instanceof IBreatheInAction) {
             ((IBreatheInAction) animal).breatheInAction();
         }
         logger.debug("...Breathing in for barking"); // dummy implementation
         // animal.downHitPointHub();
         downHitPoint.downHitPoint();
-
     }
 
     protected void prepareAbdominalMuscle() { // also actually depends on barking

@@ -34,6 +34,30 @@ public class Zombie extends Animal implements IBreatheInAction {
     //                                                                         ===========
     public Zombie() {
     }
+    
+    // #1on1: 具象to具象のオブジェクトの例 (2026/02/16)
+    //@Override
+    //protected BarkingProcess createBarkingProcess() {
+    //    return new ZombieBarkingProcess(this, () -> downHitPoint());
+    //}
+    //
+    //public class ZombieBarkingProcess extends BarkingProcess {
+    //
+    //    public ZombieBarkingProcess(Animal animal, IDownHitPoint downHitPoint) {
+    //        super(animal, downHitPoint);
+    //    }
+    //
+    //    @Override
+    //    protected void breatheIn() {
+    //        super.breatheIn();
+    //        zombieDiary.countBreatheIn();
+    //    }
+    //}
+    
+    // #1on1: @Transactionalの処理の挟み込みの仕組みの話 (2026/02/16)
+    
+    // #1on1: JavaとKotlinで、オーバーライド可否のデフォルトが違う話 (2026/02/16)
+    // jfluteのC#での体験。
 
     @Override
     protected int getInitialHitPoint() {
@@ -57,10 +81,11 @@ public class Zombie extends Animal implements IBreatheInAction {
     //                                                                               Bark
     //                                                                              ======
     // done ishihara 修行++: Zombieの挙動をキープするように by jflute (2025/10/20)
-    // TODO done ishihara 修行#: 経由がpublicになっているのでdownHitPoint()と同じ問題 by jflute (2025/11/04)
+    // done ishihara 修行#: 経由がpublicになっているのでdownHitPoint()と同じ問題 by jflute (2025/11/04)
     // ただ、解決方法は別にもあって、downHitPoint()の方と同じやり方じゃなくてもいい。
     // hint1: オブジェクト指向はもっと自由 (石原さんが最初思いついていたやり方(路線)で頑張ってみましょう)
     // hint2: step6の範疇で実現可能
+    // #1on1: 上の方で「具象to具象のオブジェクトの例」のお話した // (2026/02/16)
     @Override
     public void breatheInAction() {
         zombieDiary.countBreatheIn();
