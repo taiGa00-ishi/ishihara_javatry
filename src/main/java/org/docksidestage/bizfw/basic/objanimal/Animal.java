@@ -37,7 +37,7 @@ public abstract class Animal implements Loudable {
     //                                                                         ===========
     public Animal() {
         hitPoint = getInitialHitPoint();
-        this.barkingProcess = new BarkingProcess(this);
+        this.barkingProcess = new BarkingProcess(this, () -> Animal.this.downHitPoint());
     }
 
     protected int getInitialHitPoint() {
@@ -53,20 +53,12 @@ public abstract class Animal implements Loudable {
 
     public abstract String getBarkWord();
 
-    /**
-     * Hook method called when breathing in for barking.
-     * Subclasses can override this to add custom behavior.
-     */
-    public void onBreatheIn() {
-        // default: do nothing (subclasses can override)
-    }
-
     // ===================================================================================
     //                                                                           Hit Point
     //                                                                           =========
     // #1on1: protectedは、サブクラスに見せる、もしくは、同じパッケージに見せる
     // done ishihara 修行++: protectedに戻せるように頑張ってみましょう (packageは動かさず) by jflute (2025/10/20)
-    // TODO ishihara 修行#: BarkingProcess以外の人が呼べちゃうので、public Hubも使わずに実現したいところ by jflute (2025/11/04)
+    // TODO Done ishihara 修行#: BarkingProcess以外の人が呼べちゃうので、public Hubも使わずに実現したいところ by jflute (2025/11/04)
     // (hint: 先のstepに進んで、何かピンと来たときに対応するでOK)
     protected void downHitPoint() {
         --hitPoint;
@@ -109,7 +101,7 @@ public abstract class Animal implements Loudable {
      * BarkingProcess専用メソッド。by jflute
      * 他の人は絶対呼ばないでください。
      */
-    public void downHitPointHub(){
-        downHitPoint();
-    }
+//    public void downHitPointHub(){
+//        downHitPoint();
+//    }
 }

@@ -17,9 +17,11 @@ public class BarkingProcess {
     private static final Logger logger = LoggerFactory.getLogger(BarkingProcess.class);
 
     private final Animal animal;
+    private final IDownHitPoint downHitPoint;
 
-    public BarkingProcess(Animal animal) {
+    public BarkingProcess(Animal animal, IDownHitPoint downHitPoint) {
         this.animal = animal;
+        this.downHitPoint = downHitPoint;
     }
 
     public BarkedSound bark() {
@@ -31,18 +33,24 @@ public class BarkingProcess {
     }
 
     protected void breatheIn() { // actually depends on barking
-        animal.onBreatheIn(); // フックとして呼び出す(Zombieのため)
+        if (animal instanceof IBreatheInAction) {
+            ((IBreatheInAction) animal).breatheInAction();
+        }
         logger.debug("...Breathing in for barking"); // dummy implementation
-        animal.downHitPointHub();
+        // animal.downHitPointHub();
+        downHitPoint.downHitPoint();
+
     }
 
     protected void prepareAbdominalMuscle() { // also actually depends on barking
         logger.debug("...Using my abdominal muscle for barking"); // dummy implementation
-        animal.downHitPointHub();
+        // animal.downHitPointHub();
+        downHitPoint.downHitPoint();
     }
 
     protected BarkedSound doBark(String barkWord) {
-        animal.downHitPointHub();
+        // animal.downHitPointHub();
+        downHitPoint.downHitPoint();
         BarkedSound sound = new BarkedSound(barkWord);
         logger.debug(barkWord);
         return sound;

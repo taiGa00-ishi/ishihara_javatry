@@ -15,12 +15,14 @@
  */
 package org.docksidestage.bizfw.basic.objanimal;
 
+import org.docksidestage.bizfw.basic.objanimal.barking.IBreatheInAction;
+
 /**
  * The object for zombie(ゾンビ).
  * @author jflute
  * @author taiGa00-ishi
  */
-public class Zombie extends Animal {
+public class Zombie extends Animal implements IBreatheInAction {
 
     // ===================================================================================
     //                                                                           Attribute
@@ -55,12 +57,12 @@ public class Zombie extends Animal {
     //                                                                               Bark
     //                                                                              ======
     // done ishihara 修行++: Zombieの挙動をキープするように by jflute (2025/10/20)
-    // TODO ishihara 修行#: 経由がpublicになっているのでdownHitPoint()と同じ問題 by jflute (2025/11/04)
+    // TODO done ishihara 修行#: 経由がpublicになっているのでdownHitPoint()と同じ問題 by jflute (2025/11/04)
     // ただ、解決方法は別にもあって、downHitPoint()の方と同じやり方じゃなくてもいい。
     // hint1: オブジェクト指向はもっと自由 (石原さんが最初思いついていたやり方(路線)で頑張ってみましょう)
     // hint2: step6の範疇で実現可能
     @Override
-    public void onBreatheIn() {
+    public void breatheInAction() {
         zombieDiary.countBreatheIn();
     }
 
