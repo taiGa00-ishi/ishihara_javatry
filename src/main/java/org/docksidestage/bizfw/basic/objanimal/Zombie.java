@@ -55,12 +55,12 @@ public class Zombie extends Animal implements IBreatheInAction {
     //}
     
     // #1on1: @Transactionalの処理の挟み込みの仕組みの話 (2026/02/16)
+    // Kotlinだと、@Transactional 付けると暗黙のopenになるようだ by いしはらさん 
     
     // #1on1: JavaとKotlinで、オーバーライド可否のデフォルトが違う話 (2026/02/16)
     // jfluteのC#での体験。
 
-    @Override
-    protected int getInitialHitPoint() {
+    public int getInitialHitPoint() {
         return -1; // magic number for infinity hit point
     }
 
