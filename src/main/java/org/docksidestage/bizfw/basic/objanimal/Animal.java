@@ -43,7 +43,7 @@ public abstract class Animal implements Loudable {
     }
 
     protected BarkingProcess createBarkingProcess() {
-        return new BarkingProcess(this, () -> downHitPoint());
+        return new BarkingProcess(() -> downHitPoint());
     }
     
     protected int getInitialHitPoint() {
@@ -54,12 +54,14 @@ public abstract class Animal implements Loudable {
     //                                                                               Bark
     //                                                                              ======
     public BarkedSound bark() {
-        return barkingProcess.bark();
+        return barkingProcess.bark(getBarkWord());
     }
 
-    // TODO ishihara getBarkWord()もできればprotectedに戻したい (元々がprotectedなので) by jflute (2026/02/16)
+    // TODO done ishihara getBarkWord()もできればprotectedに戻したい (元々がprotectedなので) by jflute (2026/02/16)
     // コールバックでもいいし、コールバックを使わないやり方でもいいし。
-    public abstract String getBarkWord();
+
+    // 再びコールバック、インターフェース作るの嫌だったのでそもそもBarking側ではStringを受け取るような形にしました。
+    protected abstract String getBarkWord();
 
     // ===================================================================================
     //                                                                           Hit Point

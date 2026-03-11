@@ -15,6 +15,7 @@
  */
 package org.docksidestage.bizfw.basic.objanimal;
 
+import org.docksidestage.bizfw.basic.objanimal.barking.BarkingProcess;
 import org.docksidestage.bizfw.basic.objanimal.barking.IBreatheInAction;
 
 /**
@@ -34,7 +35,12 @@ public class Zombie extends Animal implements IBreatheInAction {
     //                                                                         ===========
     public Zombie() {
     }
-    
+
+    @Override
+    protected BarkingProcess createBarkingProcess() {
+        return new BarkingProcess(() -> downHitPoint(), () -> breatheInAction());
+    }
+
     // #1on1: 具象to具象のオブジェクトの例 (2026/02/16)
     //@Override
     //protected BarkingProcess createBarkingProcess() {

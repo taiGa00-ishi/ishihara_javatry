@@ -1,6 +1,5 @@
 package org.docksidestage.bizfw.basic.objanimal.barking;
 
-import org.docksidestage.bizfw.basic.objanimal.Animal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,28 +15,37 @@ public class BarkingProcess {
 
     private static final Logger logger = LoggerFactory.getLogger(BarkingProcess.class);
 
-    private final Animal animal;
     private final IDownHitPoint downHitPoint;
+    private final IBreatheInAction breatheInAction; // null means no extra action
 
-    public BarkingProcess(Animal animal, IDownHitPoint downHitPoint) {
-        this.animal = animal;
+    public BarkingProcess(IDownHitPoint downHitPoint, IBreatheInAction breatheInAction) {
         this.downHitPoint = downHitPoint;
+        this.breatheInAction = breatheInAction;
     }
 
-    public BarkedSound bark() {
+    public BarkingProcess(IDownHitPoint downHitPoint) {
+        this.downHitPoint = downHitPoint;
+        this.breatheInAction = null;
+    }
+
+    public BarkedSound bark(String barkWord) {
         breatheIn();
         prepareAbdominalMuscle();
-        String barkWord = animal.getBarkWord();
         BarkedSound barkedSound = doBark(barkWord);
         return barkedSound;
     }
 
     protected void breatheIn() { // actually depends on barking
-        // TODO ishihara 修行#: animalへの依存を無くせたら無くしたいところ by jflute (2026/02/16)
+        // TODO done ishihara 修行#: animalへの依存を無くせたら無くしたいところ by jflute (2026/02/16)
         // (BarkingProcessのクラス内で、Animalクラスへの参照を無くしたい)
         // hint1: インターフェースにとらわれていても大丈夫だよ
-        if (animal instanceof IBreatheInAction) {
-            ((IBreatheInAction) animal).breatheInAction();
+
+        // オーバーロード的な考えでbreatheInを二つ用意して引数によって変わるようなアイデアで最初考えた
+        // 結局barkで条件分岐しないといけないのでそれより前の段階で引数の違う同じ名前のものを用意しようとした
+        // barkingProcessのコンストラクタで2パターンに分けることにした
+        // animalかどうか知らなくて良くなったのでAnimalからthisを受け取らないようにした
+        if (breatheInAction != null) {
+            breatheInAction.breatheInAction();
         }
         logger.debug("...Breathing in for barking"); // dummy implementation
         // animal.downHitPointHub();
