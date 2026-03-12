@@ -15,6 +15,7 @@ public class BarkingProcess {
 
     private static final Logger logger = LoggerFactory.getLogger(BarkingProcess.class);
 
+    // #1on1: nullの可否をコメントで表現してるのとてもGood (2026/03/12)
     private final IDownHitPoint downHitPoint;
     private final IBreatheInAction breatheInAction; // null means no extra action
 
@@ -36,7 +37,7 @@ public class BarkingProcess {
     }
 
     protected void breatheIn() { // actually depends on barking
-        // TODO done ishihara 修行#: animalへの依存を無くせたら無くしたいところ by jflute (2026/02/16)
+        // done ishihara 修行#: animalへの依存を無くせたら無くしたいところ by jflute (2026/02/16)
         // (BarkingProcessのクラス内で、Animalクラスへの参照を無くしたい)
         // hint1: インターフェースにとらわれていても大丈夫だよ
 

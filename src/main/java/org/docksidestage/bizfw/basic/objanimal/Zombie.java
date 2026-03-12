@@ -38,6 +38,33 @@ public class Zombie extends Animal implements IBreatheInAction {
 
     @Override
     protected BarkingProcess createBarkingProcess() {
+        // TODO ishihara ZombieがIBreatheInActionをimplementsするくらいなら... by jflute (2026/03/12)
+        // Zombie自身がBreatheInActionになりうるオブジェクトと言えるので、
+        //  e.g. return new BarkingProcess(() -> downHitPoint(), this);
+        // でも良い。
+        // ただ、この方法だと、breatheInAction()がpublicで、countBreatheIn()を公開してしまう。
+        // downHitPoint()とかと同じジレンマを抱えることになる。
+        //
+        // 一方で、コールバックで仲介役方式を使うのであれば、implementsは不要で、
+        // breatheInAction() は protected でカプセル化することができる。
+        // (究極、() -> zombieDiary.countBreatheIn()) でも構わないくらいだけど、
+        // ちょっと可読性が落ちるかもなので、breatheInActionという言葉を経由するのは悪くない)
+        //
+        // 一方で一方で、BarkingProcessの第一引数の仕入れロジックがコピーされてるとも言えるので、
+        // オーバーライドのスコープを最小限にするために、第二引数の仕入れロジックをcreateメソッド化して、
+        // Zombieはそれだけをオーバーライドするってのもアリ。(jfluteだとそこまでやっちゃう)
+        // (もし、Animalがフレームワークで、Zombieが現場のコードだったりとか想定すると)
+        //@Override
+        //protected IBreatheInAction createBarkingBreatheInAction() {
+        //    return () -> zombieDiary.countBreatheIn();
+        //}
+        // #1on1: OSSのライセンスの話、Apache, GPL, コピーしたときの扱いの違い (2026/03/12)
+        // 学生時代の成果物、MPLにした話 by いしはらさん
+        // #1on1: フレームワークのprotected話。privateにするしないの切り分け by いしはらさん (2026/03/12)
+        // 教科書的なセオリーで言うと、フレームワークの根幹が崩れるようなロジックはprivateで確実に隠す。
+        // 変なオーバーライドで壊されて変な挙動になってトラブルになってフレームワークのせいになるのを避ける意味合いでも。
+        // 一方で、DBFluteとかだと、MySQLやJavaほどの大きなお金が影響するフレームワークではないので...
+        // 現場でのフットワークの軽さも重視して、ほぼ protected スタイルでやっている。
         return new BarkingProcess(() -> downHitPoint(), () -> breatheInAction());
     }
 
