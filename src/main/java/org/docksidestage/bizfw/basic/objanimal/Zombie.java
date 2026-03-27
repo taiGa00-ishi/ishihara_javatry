@@ -39,7 +39,7 @@ public class Zombie extends Animal {
     protected IBreatheInAction createBarkingBreatheInAction() {
         return () -> zombieDiary.countBreatheIn();
     }
-        // TODO　done ishihara ZombieがIBreatheInActionをimplementsするくらいなら... by jflute (2026/03/12)
+        // done ishihara ZombieがIBreatheInActionをimplementsするくらいなら... by jflute (2026/03/12)
         // Zombie自身がBreatheInActionになりうるオブジェクトと言えるので、
         //  e.g. return new BarkingProcess(() -> downHitPoint(), this);
         // でも良い。
