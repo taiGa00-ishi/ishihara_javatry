@@ -15,7 +15,6 @@
  */
 package org.docksidestage.bizfw.basic.objanimal;
 
-import org.docksidestage.bizfw.basic.objanimal.barking.BarkingProcess;
 import org.docksidestage.bizfw.basic.objanimal.barking.IBreatheInAction;
 
 /**
@@ -23,7 +22,7 @@ import org.docksidestage.bizfw.basic.objanimal.barking.IBreatheInAction;
  * @author jflute
  * @author taiGa00-ishi
  */
-public class Zombie extends Animal implements IBreatheInAction {
+public class Zombie extends Animal {
 
     // ===================================================================================
     //                                                                           Attribute
@@ -37,8 +36,10 @@ public class Zombie extends Animal implements IBreatheInAction {
     }
 
     @Override
-    protected BarkingProcess createBarkingProcess() {
-        // TODO ishihara ZombieがIBreatheInActionをimplementsするくらいなら... by jflute (2026/03/12)
+    protected IBreatheInAction createBarkingBreatheInAction() {
+        return () -> zombieDiary.countBreatheIn();
+    }
+        // TODO　done ishihara ZombieがIBreatheInActionをimplementsするくらいなら... by jflute (2026/03/12)
         // Zombie自身がBreatheInActionになりうるオブジェクトと言えるので、
         //  e.g. return new BarkingProcess(() -> downHitPoint(), this);
         // でも良い。
@@ -65,8 +66,6 @@ public class Zombie extends Animal implements IBreatheInAction {
         // 変なオーバーライドで壊されて変な挙動になってトラブルになってフレームワークのせいになるのを避ける意味合いでも。
         // 一方で、DBFluteとかだと、MySQLやJavaほどの大きなお金が影響するフレームワークではないので...
         // 現場でのフットワークの軽さも重視して、ほぼ protected スタイルでやっている。
-        return new BarkingProcess(() -> downHitPoint(), () -> breatheInAction());
-    }
 
     // #1on1: 具象to具象のオブジェクトの例 (2026/02/16)
     //@Override
@@ -119,10 +118,6 @@ public class Zombie extends Animal implements IBreatheInAction {
     // hint1: オブジェクト指向はもっと自由 (石原さんが最初思いついていたやり方(路線)で頑張ってみましょう)
     // hint2: step6の範疇で実現可能
     // #1on1: 上の方で「具象to具象のオブジェクトの例」のお話した // (2026/02/16)
-    @Override
-    public void breatheInAction() {
-        zombieDiary.countBreatheIn();
-    }
 
     @Override
     public String getBarkWord() {

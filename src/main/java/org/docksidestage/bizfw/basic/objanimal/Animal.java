@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.objanimal;
 
 import org.docksidestage.bizfw.basic.objanimal.barking.BarkedSound;
 import org.docksidestage.bizfw.basic.objanimal.barking.BarkingProcess;
+import org.docksidestage.bizfw.basic.objanimal.barking.IBreatheInAction;
 import org.docksidestage.bizfw.basic.objanimal.loud.Loudable;
 
 /**
@@ -43,7 +44,11 @@ public abstract class Animal implements Loudable {
     }
 
     protected BarkingProcess createBarkingProcess() {
-        return new BarkingProcess(() -> downHitPoint());
+        return new BarkingProcess(() -> downHitPoint(), createBarkingBreatheInAction());
+    }
+
+    protected IBreatheInAction createBarkingBreatheInAction() {
+        return null;
     }
 
     protected int getInitialHitPoint() {
