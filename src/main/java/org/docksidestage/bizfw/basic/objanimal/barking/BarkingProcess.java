@@ -24,11 +24,7 @@ public class BarkingProcess {
         this.breatheInAction = breatheInAction;
     }
 
-    // TODO ishihara もうZombieの修正によって、使わなくなったので削除でいいかなと by jflute (2026/03/27)
-    public BarkingProcess(IDownHitPoint downHitPoint) {
-        this.downHitPoint = downHitPoint;
-        this.breatheInAction = null;
-    }
+    // TODO done ishihara もうZombieの修正によって、使わなくなったので削除でいいかなと by jflute (2026/03/27)
 
     public BarkedSound bark(String barkWord) {
         breatheIn();

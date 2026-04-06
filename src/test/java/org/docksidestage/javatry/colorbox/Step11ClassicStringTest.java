@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.docksidestage.bizfw.colorbox.ColorBox;
 import org.docksidestage.bizfw.colorbox.color.BoxColor;
+import org.docksidestage.bizfw.colorbox.space.BoxSpace;
 import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom;
 import org.docksidestage.unit.PlainTestCase;
 
@@ -31,7 +32,7 @@ import org.docksidestage.unit.PlainTestCase;
  * o don't fix the YourPrivateRoom class and color-box classes
  * </pre>
  * @author jflute
- * @author your_name_here
+ * @author TaiGa00-ishi
  */
 public class Step11ClassicStringTest extends PlainTestCase {
 
@@ -60,6 +61,21 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * (カラーボックスの中で、色の名前が一番長いものは？)
      */
     public void test_length_findMax_colorSize() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        if (!colorBoxList.isEmpty()) {
+            int max = 0;
+            String maxColorName = "";
+            for (int i = 0; i < colorBoxList.size(); i++) {
+                ColorBox colorBox = colorBoxList.get(i);
+                BoxColor boxColor = colorBox.getColor();
+                String colorName = boxColor.getColorName();
+                if (colorName.length() > max) {
+                    max = colorName.length();
+                    maxColorName = colorName;
+                }
+            }
+            log(max + " (" + maxColorName + ")");
+        }
     }
 
     /**
@@ -67,7 +83,28 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * (カラーボックスに入ってる文字列の中で、一番長い文字列は？)
      */
     public void test_length_findMax_stringContent() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        if (!colorBoxList.isEmpty()) {
+            int length = 0;
+            String longestWord = "";
+            for (ColorBox colorBox : colorBoxList) {
+                for (BoxSpace space : colorBox.getSpaceList()) {
+                    Object content = space.getContent();
+                    if (content instanceof String) {
+                        String str = (String) content;
+                        if (str.length() > length) {
+                            length = str.length();
+                            longestWord = str;
+                        }
+                    }
+                }
+            }
+            log(length + " (" + longestWord + ")");
+        }
     }
+
+    // どうしてもfor分だとインデントたくさんあるような書き方になってしまう。
+    // 他にスッキリかける方法はあるのだろうか？
 
     /**
      * Which value (toString() if non-string) has second-max length in color-boxes? (latter if same length) <br>
