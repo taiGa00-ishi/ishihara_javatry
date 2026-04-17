@@ -65,7 +65,7 @@ public class Step11ClassicStringTest extends PlainTestCase {
      */
     public void test_length_findMax_colorSize() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-        // TODO ishihara not found のときに log("*not found") 的なものが出るようにお願いします by jflute (2026/04/06)
+        // TODO done ishihara not found のときに log("*not found") 的なものが出るようにお願いします by jflute (2026/04/06)
         if (!colorBoxList.isEmpty()) {
             int max = 0;
             String maxColorName = "";
@@ -81,6 +81,8 @@ public class Step11ClassicStringTest extends PlainTestCase {
                 }
             }
             log(max + " (" + maxColorName + ")");
+        } else {
+            log("*not found");
         }
     }
 
@@ -91,25 +93,25 @@ public class Step11ClassicStringTest extends PlainTestCase {
     public void test_length_findMax_stringContent() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
         if (!colorBoxList.isEmpty()) {
-            // TODO ishihara longestWordとしてるくらいなら、longestLengthが嬉しい by jflute (2026/04/06)
+            // TODO done ishihara longestWordとしてるくらいなら、longestLengthが嬉しい by jflute (2026/04/06)
             // この二つの変数は関連性が強く、連動するもの、であることをぱっと見でわかりたい。
             // 一方で、スコープ短いからすっきり変数にする方向性であれば、逆にwordでいいのかなと。
             // (一方で一方で、jfluteの好みだと、maxとcurrentのlengthを区別したい)
-            int length = 0;
+            int longestLength = 0;
             String longestWord = "";
             for (ColorBox colorBox : colorBoxList) {
                 for (BoxSpace space : colorBox.getSpaceList()) {
                     Object content = space.getContent();
                     if (content instanceof String) {
                         String str = (String) content;
-                        if (str.length() > length) {
-                            length = str.length();
+                        if (str.length() > longestLength) {
+                            longestLength = str.length();
                             longestWord = str;
                         }
                     }
                 }
             }
-            log(length + " (" + longestWord + ")");
+            log(longestLength + " (" + longestWord + ")");
         }
     }
 
