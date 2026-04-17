@@ -15,12 +15,15 @@
  */
 package org.docksidestage.javatry.colorbox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.docksidestage.bizfw.colorbox.ColorBox;
 import org.docksidestage.bizfw.colorbox.color.BoxColor;
 import org.docksidestage.bizfw.colorbox.space.BoxSpace;
 import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom;
+import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom.GuardianBox;
+import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom.GuardianBoxTextNotFoundException;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -111,13 +114,58 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * (カラーボックスに入ってる値 (文字列以外はtoString()) の中で、二番目に長い文字列は？ (同じ長さのものがあれば後の方を))
      */
     public void test_length_findSecondMax_contentToString() {
+        // 2番目を探す
+        // maxより小さいmaxと考える
+        // maxを最初のループで見つけて、それより小さいmaxを探すパターン(2回maxを探す処理をする)
+        // もしくはmaxの値より小なりの文字列の長さの時かつその次のmaxより小さい文字列の時にその文字を格納する(1つのループ処理内で一気にするパターン)
+        // 考慮カラーボックスの値が文字列でない時はtoStringを呼び出す
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        if (!colorBoxList.isEmpty()) {
+            int maxLength = 0;
+            String maxString = "";
+            int secondMaxLength = 0;
+            String secondMaxString = "";
+            for (ColorBox colorBox : colorBoxList) {
+                for (BoxSpace space : colorBox.getSpaceList()) {
+                    Object content = space.getContent();
+                    if (content != null) {
+                        String str = content instanceof String ? (String) content : content.toString();
+                        // 同じ長さなら後の方を優先するため >= を使う
+                        if (str.length() >= maxLength) {
+                            secondMaxLength = maxLength;
+                            secondMaxString = maxString;
+                            maxLength = str.length();
+                            maxString = str;
+                        } else if (str.length() >= secondMaxLength) {
+                            secondMaxLength = str.length();
+                            secondMaxString = str;
+                        }
+                    }
+                }
+            }
+            log(secondMaxLength + " (" + secondMaxString + ")");
+        }
     }
+    // なんか出力が仰々しいけどいけているのだろうか？
+    // toStringでした後の中身にも何か考慮しないといけない事項がある？
 
     /**
      * How many total lengths of strings in color-boxes? <br>
      * (カラーボックスに入ってる文字列の長さの合計は？)
      */
     public void test_length_calculateLengthSum() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        int sum = 0;
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof String) {
+                    // contentはObjectなのでStringをキャストしてあげないといけないっぽい
+                    sum += ((String) content).length();
+                }
+            }
+        }
+        log(sum);
     }
 
     // ===================================================================================
@@ -128,6 +176,19 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * ("Water" で始まる文字列をしまっているカラーボックスの色は？)
      */
     public void test_startsWith_findFirstWord() {
+        // Waterで始まっているものが１つと限らないのでリストでresultを持っておきたい
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<String> result = new ArrayList<>();
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof String && ((String) content).startsWith("Water")) {
+                    result.add(colorBox.getColor().getColorName());
+                    break;
+                }
+            }
+        }
+        log(result);
     }
 
     /**
@@ -135,7 +196,37 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * (カラーボックスに入ってる「ど」を二つ以上含む文字列で、最後の「ど」は何文字目から始まる？ (e.g. "どんどん" => 3))
      */
     public void test_lastIndexOf_findIndex() {
+        // 文字列の要素でどをincludeしているものだけに探索してカウントが2つ以上のときに最後の「ど」のindexも持っておく
+        // 「ど」が見つかるたびに都度都度indexを更新していくイメージ
+        // これも１つだけとは限らないので、ログとしては[見つかった文字列 : 最後の「ど」の位置]で出力
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<String> result = new ArrayList<>();
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof String) {
+                    String str = (String) content;
+                    if (str.contains("ど")) {
+                        int count = 0;
+                        int lastIndex = -1;
+                        for (int i = 0; i < str.length(); i++) {
+                            if (str.charAt(i) == 'ど') {
+                                count++;
+                                lastIndex = i; // 見つかるたびに更新
+                            }
+                        }
+                        if (count >= 2) {
+                            // 「何文字目」は1始まりなので +1
+                            result.add(str + " : " + (lastIndex + 1));
+                        }
+                    }
+                }
+            }
+        }
+        log(result);
     }
+
+    // indexOfとlastIndexOfのコラボでも作れたっぽい
 
     // ===================================================================================
     //                                                                 Welcome to Guardian
@@ -145,6 +236,26 @@ public class Step11ClassicStringTest extends PlainTestCase {
      * (カラーボックスの中に入っているGuardianBoxクラスのtextの長さの合計は？)
      */
     public void test_welcomeToGuardian() {
+        // spaceがasGuardianの時にGuardianの順序に従ってtextを聞く、合計を出す
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        int sum = 0;
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof GuardianBox) {
+                    GuardianBox guardian = (GuardianBox) content;
+                    guardian.wakeUp();
+                    guardian.allowMe();
+                    guardian.open();
+                    try {
+                        sum += guardian.getText().length();
+                    } catch (GuardianBoxTextNotFoundException e) {
+                        // textがnullのGuardianBoxはスキップ
+                    }
+                }
+            }
+        }
+        log(sum);
     }
 
     // ===================================================================================
