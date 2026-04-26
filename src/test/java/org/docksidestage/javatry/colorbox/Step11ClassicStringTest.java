@@ -65,7 +65,7 @@ public class Step11ClassicStringTest extends PlainTestCase {
      */
     public void test_length_findMax_colorSize() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-        // TODO done ishihara not found のときに log("*not found") 的なものが出るようにお願いします by jflute (2026/04/06)
+        // done ishihara not found のときに log("*not found") 的なものが出るようにお願いします by jflute (2026/04/06)
         if (!colorBoxList.isEmpty()) {
             int max = 0;
             String maxColorName = "";
@@ -93,7 +93,7 @@ public class Step11ClassicStringTest extends PlainTestCase {
     public void test_length_findMax_stringContent() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
         if (!colorBoxList.isEmpty()) {
-            // TODO done ishihara longestWordとしてるくらいなら、longestLengthが嬉しい by jflute (2026/04/06)
+            // done ishihara longestWordとしてるくらいなら、longestLengthが嬉しい by jflute (2026/04/06)
             // この二つの変数は関連性が強く、連動するもの、であることをぱっと見でわかりたい。
             // 一方で、スコープ短いからすっきり変数にする方向性であれば、逆にwordでいいのかなと。
             // (一方で一方で、jfluteの好みだと、maxとcurrentのlengthを区別したい)
@@ -161,6 +161,7 @@ if (length > 0) {
         // 考慮カラーボックスの値が文字列でない時はtoStringを呼び出す
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
         if (!colorBoxList.isEmpty()) {
+            // TODO ishihara もし、min側を探すとなった場合は、初期値はどうする？ by jflute (2026/04/26)
             int maxLength = 0;
             String maxString = "";
             int secondMaxLength = 0;
@@ -188,6 +189,7 @@ if (length > 0) {
     }
     // なんか出力が仰々しいけどいけているのだろうか？
     // toStringでした後の中身にも何か考慮しないといけない事項がある？
+    // TODO ishihara [へんじ] 仰々しい中身が入ってるから大丈夫だと思う by jflute (2026/04/26)
 
     /**
      * How many total lengths of strings in color-boxes? <br>
@@ -201,6 +203,7 @@ if (length > 0) {
                 Object content = space.getContent();
                 if (content instanceof String) {
                     // contentはObjectなのでStringをキャストしてあげないといけないっぽい
+                    // TODO ishihara [ふぉろー]yes, instanceofは判定しただけなので by jflute (2026/04/26)
                     sum += ((String) content).length();
                 }
             }
@@ -216,8 +219,10 @@ if (length > 0) {
      * ("Water" で始まる文字列をしまっているカラーボックスの色は？)
      */
     public void test_startsWith_findFirstWord() {
+        // TODO ishihara [いいね]素晴らしいその配慮 by jflute (2026/04/26)
         // Waterで始まっているものが１つと限らないのでリストでresultを持っておきたい
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        // TODO ishihara リストなので、複数を示す単語にしたいところ。results でもいいし resultList でも by jflute (2026/04/26)
         List<String> result = new ArrayList<>();
         for (ColorBox colorBox : colorBoxList) {
             for (BoxSpace space : colorBox.getSpaceList()) {
@@ -267,6 +272,7 @@ if (length > 0) {
     }
 
     // indexOfとlastIndexOfのコラボでも作れたっぽい
+    // TODO ishihara [ふぉろー] でもベタに書いてみるトレーニングになったということで(^^ by jflute (2026/04/26)
 
     // ===================================================================================
     //                                                                 Welcome to Guardian
