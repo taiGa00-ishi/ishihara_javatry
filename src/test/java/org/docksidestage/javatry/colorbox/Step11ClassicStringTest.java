@@ -162,7 +162,7 @@ if (length > 0) {
         // 考慮カラーボックスの値が文字列でない時はtoStringを呼び出す
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
         if (!colorBoxList.isEmpty()) {
-            // TODO ishihara もし、min側を探すとなった場合は、初期値はどうする？ by jflute (2026/04/26)
+            // done ishihara もし、min側を探すとなった場合は、初期値はどうする？ by jflute (2026/04/26)
             // lengthでの最長の2147483647を設定する？
             int maxLength = 0;
             String maxString = "";
@@ -191,7 +191,7 @@ if (length > 0) {
     }
     // なんか出力が仰々しいけどいけているのだろうか？
     // toStringでした後の中身にも何か考慮しないといけない事項がある？
-    // TODO ishihara [へんじ] 仰々しい中身が入ってるから大丈夫だと思う by jflute (2026/04/26)
+    // done ishihara [へんじ] 仰々しい中身が入ってるから大丈夫だと思う by jflute (2026/04/26)
 
     /**
      * How many total lengths of strings in color-boxes? <br>
@@ -205,8 +205,10 @@ if (length > 0) {
                 Object content = space.getContent();
                 if (content instanceof String) {
                     // contentはObjectなのでStringをキャストしてあげないといけないっぽい
-                    // TODO ishihara [ふぉろー]yes, instanceofは判定しただけなので by jflute (2026/04/26)
-                    sum += ((String) content).length();
+                    // done ishihara [ふぉろー]yes, instanceofは判定しただけなので by jflute (2026/04/26)
+                    //sum += ((String) content).length();
+                    // #1on1: Editorが ((String) content).contains(s); を補完してくれたりする (2026/05/11)
+                    // contentがStringであることをわかってて、dotのメソッド補完でもStringもメソッドが出てくる。
                 }
             }
         }
@@ -221,10 +223,10 @@ if (length > 0) {
      * ("Water" で始まる文字列をしまっているカラーボックスの色は？)
      */
     public void test_startsWith_findFirstWord() {
-        // TODO ishihara [いいね]素晴らしいその配慮 by jflute (2026/04/26)
+        // done ishihara [いいね]素晴らしいその配慮 by jflute (2026/04/26)
         // Waterで始まっているものが１つと限らないのでリストでresultを持っておきたい
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-        // TODO done ishihara リストなので、複数を示す単語にしたいところ。results でもいいし resultList でも by jflute (2026/04/26)
+        // done ishihara リストなので、複数を示す単語にしたいところ。results でもいいし resultList でも by jflute (2026/04/26)
         List<String> results = new ArrayList<>();
         for (ColorBox colorBox : colorBoxList) {
             for (BoxSpace space : colorBox.getSpaceList()) {
@@ -274,7 +276,8 @@ if (length > 0) {
     }
 
     // indexOfとlastIndexOfのコラボでも作れたっぽい
-    // TODO ishihara [ふぉろー] でもベタに書いてみるトレーニングになったということで(^^ by jflute (2026/04/26)
+    // done ishihara [ふぉろー] でもベタに書いてみるトレーニングになったということで(^^ by jflute (2026/04/26)
+    // #1on1: if (str.indexOf("ど") != str.lastIndexOf("ど")) {
 
     // ===================================================================================
     //                                                                 Welcome to Guardian
@@ -322,6 +325,7 @@ if (length > 0) {
             for (BoxSpace space : colorBox.getSpaceList()) {
                 Object content = space.getContent();
                 if (content instanceof Map) {
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) content;
                     log(buildMapString(map, false));
                 }
@@ -341,6 +345,7 @@ if (length > 0) {
             for (BoxSpace space : colorBox.getSpaceList()) {
                 Object content = space.getContent();
                 if (content instanceof Map) {
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> map = (Map<String, Object>) content;
                     log(buildMapString(map, true));
                 }
@@ -348,13 +353,16 @@ if (length > 0) {
         }
     }
 
+    // #1on1: とっても綺麗にできてる。再帰呼び出ししっかり使いこなせている (2026/05/11)
     private String buildMapString(Map<String, Object> map, boolean nested) {
         List<String> entries = new ArrayList<>();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             String valueString;
             if (nested && value instanceof Map) {
-                valueString = buildMapString((Map<String, Object>) value, true);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> nestedMap = (Map<String, Object>) value;
+                valueString = buildMapString(nestedMap, true);
             } else {
                 valueString = String.valueOf(value);
             }
