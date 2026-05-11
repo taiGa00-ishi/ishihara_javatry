@@ -163,6 +163,7 @@ if (length > 0) {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
         if (!colorBoxList.isEmpty()) {
             // TODO ishihara もし、min側を探すとなった場合は、初期値はどうする？ by jflute (2026/04/26)
+            // lengthでの最長の2147483647を設定する？
             int maxLength = 0;
             String maxString = "";
             int secondMaxLength = 0;
@@ -223,18 +224,18 @@ if (length > 0) {
         // TODO ishihara [いいね]素晴らしいその配慮 by jflute (2026/04/26)
         // Waterで始まっているものが１つと限らないのでリストでresultを持っておきたい
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-        // TODO ishihara リストなので、複数を示す単語にしたいところ。results でもいいし resultList でも by jflute (2026/04/26)
-        List<String> result = new ArrayList<>();
+        // TODO done ishihara リストなので、複数を示す単語にしたいところ。results でもいいし resultList でも by jflute (2026/04/26)
+        List<String> results = new ArrayList<>();
         for (ColorBox colorBox : colorBoxList) {
             for (BoxSpace space : colorBox.getSpaceList()) {
                 Object content = space.getContent();
                 if (content instanceof String && ((String) content).startsWith("Water")) {
-                    result.add(colorBox.getColor().getColorName());
+                    results.add(colorBox.getColor().getColorName());
                     break;
                 }
             }
         }
-        log(result);
+        log(results);
     }
 
     /**
