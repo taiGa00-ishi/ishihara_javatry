@@ -17,6 +17,7 @@ package org.docksidestage.javatry.colorbox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.docksidestage.bizfw.colorbox.ColorBox;
 import org.docksidestage.bizfw.colorbox.color.BoxColor;
@@ -312,6 +313,19 @@ if (length > 0) {
      * (カラーボックスの中に入っている java.util.Map を "map:{ key = value ; key = value ; ... }" という形式で表示すると？)
      */
     public void test_showMap_flat() {
+        // とりあえず同じ感じでループを回してmapの要素の時に指定のフォーマットに落とし込む
+        // 追記
+        // 次の問題で再帰的にmapを処理するようにしたので、シンプルに関数を呼び出すだけにした
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof Map) {
+                    Map<String, Object> map = (Map<String, Object>) content;
+                    log(buildMapString(map, false));
+                }
+            }
+        }
     }
 
     /**
@@ -319,6 +333,33 @@ if (length > 0) {
      * (カラーボックスの中に入っている java.util.Map を "map:{ key = value ; key = map:{ key = value ; ... } ; ... }" という形式で表示すると？)
      */
     public void test_showMap_nested() {
+        // 同じ感じでループさせて、またmapが中にあれば同じような処理をネストして行う
+        // 何重もあったら書ききれないので再帰的な関数を作って対応する
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        for (ColorBox colorBox : colorBoxList) {
+            for (BoxSpace space : colorBox.getSpaceList()) {
+                Object content = space.getContent();
+                if (content instanceof Map) {
+                    Map<String, Object> map = (Map<String, Object>) content;
+                    log(buildMapString(map, true));
+                }
+            }
+        }
+    }
+
+    private String buildMapString(Map<String, Object> map, boolean nested) {
+        List<String> entries = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            String valueString;
+            if (nested && value instanceof Map) {
+                valueString = buildMapString((Map<String, Object>) value, true);
+            } else {
+                valueString = String.valueOf(value);
+            }
+            entries.add(entry.getKey() + " = " + valueString);
+        }
+        return "map:{ " + String.join(" ; ", entries) + " }";
     }
 
     // ===================================================================================
