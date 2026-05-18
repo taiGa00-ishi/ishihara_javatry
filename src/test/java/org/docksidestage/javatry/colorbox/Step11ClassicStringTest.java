@@ -16,6 +16,8 @@
 package org.docksidestage.javatry.colorbox;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -380,6 +382,82 @@ if (length > 0) {
      * (whiteのカラーボックスのupperスペースに入っているSecretBoxクラスのtextをMapに変換してtoString()すると？)
      */
     public void test_parseMap_flat() {
+        // まず理解できるところまで
+        // 1,whiteを抽出　2,upperを取得　3,contentを取得　4,textを取得
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        for (ColorBox colorBox : colorBoxList) {
+            if (colorBox.getColor().getColorName().equals("white")) {
+                BoxSpace upperSpace = colorBox.getSpaceList().get(0);
+                Object content = upperSpace.getContent();
+                if (content instanceof YourPrivateRoom.SecretBox) {
+                    YourPrivateRoom.SecretBox secretBox = (YourPrivateRoom.SecretBox) content;
+                    // ここで取得したものをmapに変換しないといけない
+                    Map<String, Object> map = mapStringToMap(secretBox.getText());
+                    log(map.toString());
+                }
+            }
+        }
+    }
+
+    // ex.map:{ dockside = over ; hangar = mystic ; broadway = bbb }
+    // ex.map:{ dockside = over ; hangar = map:{ mystic = performance ; shadow = musical } ; broadway = bbb }
+    private Map<String, Object> mapStringToMap(String content) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        String innerMapString = content.substring("map:{ ".length(), content.lastIndexOf(" }"));
+        // こうなっているはず
+        // dockside = over ; hangar = map:{ mystic = performance ; shadow = musical } ; broadway = bbb
+        // 単純に;で分割すると事故る
+        // こんな感じで分割できたらいい感じかも
+        // dockside = over
+        // hangar = map:{ mystic = performance ; shadow = musical }　<- ここでvalueに対して再帰させる　
+        // broadway = bbb
+        // こんな感じで分割できたら＝で区切ってputしていく
+        for (String entry : splitMapStrings(innerMapString)) {
+            // entry dockside = over
+            // {dockside=over}
+            // entry hangar = map:{ mystic = performance ; shadow = musical }
+            // 別マップに登録されるとまずい
+            // putしながら再帰投げる
+            // 再帰先　map:{ mystic = performance ; shadow = musical }
+            // mystic = performance ; shadow = musical
+            // splitMapStrings(mystic = performance ; shadow = musical)
+            // [0]mystic = performance [1]shadow = musical
+            // どうなる？ ikesou
+            int index = entry.indexOf(" = ");
+            String key = entry.substring(0, index);
+            String value = entry.substring(index + 2);
+            if (entry.contains("map:{")) {
+                result.put(key, mapStringToMap(value));
+            } else {
+                result.put(key, value);
+            }
+        }
+        return result;
+    }
+
+    // ex dockside = over ; hangar = map:{ mystic = performance ; shadow = musical } ; broadway = bbb
+    private List<String> splitMapStrings(String input) {
+        List<String> output = new ArrayList<>();
+        int depth = 0;
+        int start = 0;
+        // dockside = over ; hangar = map:{ mystic = performance ; shadow = musical } ; broadway = bbb
+        // [0] dockside = over
+        // depth 1
+        // }のときdepth0になり、次の;でトリガー
+        // [1] hangar = map:{ mystic = performance ; shadow = musical }
+        // [2] broadway = bbb
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '{') {
+                depth++;
+            } else if (input.charAt(i) == '}') {
+                depth--;
+            } else if (input.charAt(i) == ';' && depth == 0) {
+                output.add(input.substring(start, i - 1));
+                start = i + 2;
+            }
+        }
+        output.add(input.substring(start));
+        return output;
     }
 
     /**
@@ -387,5 +465,24 @@ if (length > 0) {
      * (whiteのカラーボックスのmiddleおよびlowerスペースに入っているSecretBoxクラスのtextをMapに変換してtoString()すると？)
      */
     public void test_parseMap_nested() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        for (ColorBox colorBox : colorBoxList) {
+            if (colorBox.getColor().getColorName().equals("white")) {
+                BoxSpace middleSpace = colorBox.getSpaceList().get(1);
+                BoxSpace lowerSpace = colorBox.getSpaceList().get(2);
+                for (BoxSpace space : Arrays.asList(middleSpace, lowerSpace)) {
+                    Object content = space.getContent();
+                    if (content instanceof YourPrivateRoom.SecretBox) {
+                        YourPrivateRoom.SecretBox secretBox = (YourPrivateRoom.SecretBox) content;
+                        // 順番が変になるな
+                        // Claude君曰く、LinkedHashMap使ったら入力順でマップを並べてくれるみたい
+                        // なので関数内で宣言するマップはLinkedでした
+                        // pointerみたいな感じで連結しているのか？知らんけど
+                        Map<String, Object> map = mapStringToMap(secretBox.getText());
+                        log(map.toString());
+                    }
+                }
+            }
+        }
     }
 }
