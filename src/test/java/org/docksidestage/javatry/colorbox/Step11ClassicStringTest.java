@@ -397,6 +397,7 @@ if (length > 0) {
                 }
             }
         }
+        // #1on1: 実装する上でいっぱいストーリーがあったようだ (2026/05/18)
     }
 
     // ex.map:{ dockside = over ; hangar = mystic ; broadway = bbb }
@@ -423,6 +424,8 @@ if (length > 0) {
             // splitMapStrings(mystic = performance ; shadow = musical)
             // [0]mystic = performance [1]shadow = musical
             // どうなる？ ikesou
+            // TODO ishihara "dockside= over" というように、valueの最初に空白が入っている by jflute (2026/05/18)
+            // あと、ハードコードの2 とか index とか変数をもうちょい改善したいところ。
             int index = entry.indexOf(" = ");
             String key = entry.substring(0, index);
             String value = entry.substring(index + 2);
@@ -478,11 +481,19 @@ if (length > 0) {
                         // Claude君曰く、LinkedHashMap使ったら入力順でマップを並べてくれるみたい
                         // なので関数内で宣言するマップはLinkedでした
                         // pointerみたいな感じで連結しているのか？知らんけど
+                        //
+                        // #1on1: LinkedHashMapのソースコードリーディングちょこっと (2026/05/18)
+                        // HashMapだけで十分なケースにおいては無駄処理になっちゃうので、デフォルトはやらない。
+                        //
+                        // HashMapはなぜ順序がputの順序にならない？ by いしはらさん
+                        // さらにリーディング、内部のtable(配列)をそのまま回している、配列の順番はhash次第。
+                        // に対して、LinkedHashMapはポインターでafter/afterで回している。
                         Map<String, Object> map = mapStringToMap(secretBox.getText());
                         log(map.toString());
                     }
                 }
             }
         }
+        // #1on1: DfMapStyleの話(歴史的なこととか) (2026/05/18)
     }
 }
